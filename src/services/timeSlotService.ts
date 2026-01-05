@@ -104,7 +104,7 @@ export const timeSlotServices = {
             const rawData = apiResponse?.data
             const mappedData = rawData?.map((item:ITimeSlot)=>({
                 id:item?.id,
-                futsal_id: item?.futsal,
+                futsal_id: item?.futsal_id,
                 day_of_week: item?.day_of_week ,
                 start_time: item?.start_time,
                 end_time: item?.end_time,
