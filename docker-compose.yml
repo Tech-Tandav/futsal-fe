@@ -6,6 +6,6 @@ services:
     environment:
       NODE_ENV: development
     ports:
-      - 7777:3000
+      - 7700:3000
 
 
