@@ -35,7 +35,12 @@ export default function FutsalDetailPage() {
           futsalServices.retrievefutsal(futsalId),
           timeSlotServices.getFilteredTimeSlot(futsalId)
         ])
-        setFutsal(futsalData)
+        if (futsalData) {
+          setFutsal(futsalData);
+        } else {
+          setFutsal(null); // Or undefined, depending on your state's allowed types
+        }
+        // setFutsal(futsalData)
         setTimeSlots(slotsData)
 
       } catch (error) {
