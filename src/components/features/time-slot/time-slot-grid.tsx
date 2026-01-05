@@ -146,7 +146,7 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId }: TimeSlo
                           status === "in_queue" && "bg-primary/5 border-primary/30",
                         )}
                         onClick={() => slot && (status === "available" || status === "in_queue") && onSlotClick(slot)}
-                        disabled={!slot || (status !== "available" && status !== "in_queue") || status === "past"}
+                        disabled={!slot || (status !== "available" && status !== "in_queue")}
                       >
                         {slot ? (
                           <>
