@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const instance = axios.create({
-    baseURL:process.env.NEXT_PUBLIC_BASEURL
+    baseURL:process.env.NEXT_PUBLIC_BASEURL || "http://202.79.51.253:7070/api/"
 }) 
 
 instance.interceptors.request.use((config)=>{
