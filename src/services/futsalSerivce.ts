@@ -51,11 +51,9 @@ export const futsalServices = {
         try{
             
             const apiResponse = await futsalApiRepository.retrievefutsal(id)
-            if (apiResponse?.status!=200){
-                return
-            }
+            
             const rawData = apiResponse?.data
-            const mappedData = {
+            const mappedData:IFutsal = {
                 id:rawData?.id,
                 name:rawData?.name,
                 image:rawData?.image,

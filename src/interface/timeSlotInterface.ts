@@ -1,6 +1,6 @@
 export interface ITimeSlot {
   id: number
-  futsal: string
+  futsal_id: string
   day_of_week: number 
   start_time: string 
   end_time: string

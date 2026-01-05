@@ -12,7 +12,7 @@ import { Spinner } from "@/src/components/ui/spinner"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/src/components/ui/card"
 import { Alert, AlertDescription } from "@/src/components/ui/alert"
 import { Button } from "@/src/components/ui/button"
-import { Label } from "@radix-ui/react-dropdown-menu"
+import { Label } from "@/src/components/ui/label"
 import { Input } from "@/src/components/ui/input"
 import { futsalServices } from '@/src/services/futsalSerivce'
 import { timeSlotServices } from "@/src/services/timeSlotService"
@@ -62,9 +62,17 @@ export default function BookingPage() {
           setError("This time slot is no longer available")
           return
         }
+        if (futsalData) {
+          setFutsal(futsalData);
+        } else {
+          setFutsal(null); // Or undefined, depending on your state's allowed types
+        }
+        if (selectedSlot) {
+          setTimeSlot(selectedSlot)
+        } else {
+          setTimeSlot(null); // Or undefined, depending on your state's allowed types
+        }
 
-        setFutsal(futsalData)
-        setTimeSlot(selectedSlot)
 
         if (userStr) {
           const user = JSON.parse(userStr)
