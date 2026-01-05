@@ -37,8 +37,8 @@ export function EditFutsalDialog({ futsal, onSuccess }: EditFutsalDialogProps) {
     city: futsal.city,
     latitude: futsal.latitude,
     longitude: futsal.longitude,
-    price_per_hour: futsal.price_per_hour,
-    image_url: futsal.image_url || "",
+    price_per_hour: futsal.pricePerHour,
+    image_url: futsal.image || "",
     amenities: futsal.amenities.join(", "),
   })
 
@@ -49,8 +49,8 @@ export function EditFutsalDialog({ futsal, onSuccess }: EditFutsalDialogProps) {
       city: futsal.city,
       latitude: futsal.latitude,
       longitude: futsal.longitude,
-      price_per_hour: futsal.price_per_hour,
-      image_url: futsal.image_url || "",
+      price_per_hour: futsal.pricePerHour,
+      image_url: futsal.image || "",
       amenities: futsal.amenities.join(", "),
     })
   }, [futsal])
@@ -69,9 +69,9 @@ export function EditFutsalDialog({ futsal, onSuccess }: EditFutsalDialogProps) {
         name: formData.name,
         address: formData.address,
         city: formData.city,
-        latitude: Number.parseFloat(formData.latitude),
-        longitude: Number.parseFloat(formData.longitude),
-        price_per_hour: Number.parseFloat(formData.price_per_hour),
+        latitude: formData.latitude,
+        longitude: formData.longitude,
+        price_per_hour: formData.price_per_hour,
         image_url: formData.image_url || undefined,
         amenities: amenitiesArray,
       })
@@ -111,7 +111,7 @@ export function EditFutsalDialog({ futsal, onSuccess }: EditFutsalDialogProps) {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          {/* <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="edit-city">City *</Label>
               <Input
@@ -120,8 +120,8 @@ export function EditFutsalDialog({ futsal, onSuccess }: EditFutsalDialogProps) {
                 value={formData.city}
                 onChange={(e) => setFormData({ ...formData, city: e.target.value })}
               />
-            </div>
-            <div className="space-y-2">
+            </div> */}
+            {/* <div className="space-y-2">
               <Label htmlFor="edit-price">Price per Hour ($) *</Label>
               <Input
                 id="edit-price"
@@ -165,10 +165,10 @@ export function EditFutsalDialog({ futsal, onSuccess }: EditFutsalDialogProps) {
                 step="any"
                 required
                 value={formData.longitude}
-                onChange={(e) => setFormData({ ...formData, longitude: e.target.value })}
-              />
+                onChange={(e) => setFormData({ ...formData, longitude: e.target.value })} */}
+              {/* />
             </div>
-          </div>
+          </div> */}
 
           <div className="space-y-2">
             <Label htmlFor="edit-image">Image URL</Label>

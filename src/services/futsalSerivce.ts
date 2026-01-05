@@ -83,11 +83,11 @@ export const futsalServices = {
     editFutsal : async(slug:any ,data:any)=>{
         try{
             console.log("THis is data on service", data)
-            const formData = new FormData()
-            formData.append("name", data.name)
-            formData.append("description", data.description)
-            formData.append("file", data.file)
-            const apiResponse = await futsalApiRepository.editfutsal(slug,formData)
+            // const formData = new FormData()
+            // formData.append("name", data.name)
+            // formData.append("description", data.description)
+            // formData.append("file", data.file)
+            const apiResponse = await futsalApiRepository.editfutsal(slug,data)
             console.log("THis is data on service after ",apiResponse)
             return apiResponse?.data
         }catch(e){

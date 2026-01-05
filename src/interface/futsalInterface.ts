@@ -6,6 +6,8 @@ export interface IFutsal{
     city:string;
     pricePerHour:number;
     amenities:string[];
-    distance:number
+    distance:number,
+    latitude?:number,
+    longitude?:number
     // time_slots:any[]
 }
