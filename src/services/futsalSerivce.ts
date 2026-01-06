@@ -47,25 +47,25 @@ export const futsalServices = {
             throw e
         }
     },
-    retrievefutsal : async(id:any)=>{
+    retrievefutsal : async(id:string): Promise<IFutsal | null> => {
         try{
-            
-            const apiResponse = await futsalApiRepository.retrievefutsal(id)
-            
-            const rawData = apiResponse?.data
-            const mappedData:IFutsal = {
-                id:rawData?.id,
-                name:rawData?.name,
-                image:rawData?.image,
-                address:rawData?.address,
-                city:rawData?.city,
-                pricePerHour:rawData?.price_per_hour,
-                amenities:rawData?.amenities,
-                distance:1,
+            const rawData = await futsalApiRepository.retrieveFutsal(id)
+
+            if (!rawData) return null
+
+            return {
+                id: rawData.id,
+                name: rawData.name,
+                image: rawData.image,
+                address: rawData.address,
+                city: rawData.city,
+                pricePerHour: rawData.price_per_hour,
+                amenities: rawData.amenities,
+                timeSlots: rawData.time_slots,
             }
-            return mappedData
         }catch(e){
             console.error("Failed to get student service: ",e)
+            throw e 
         }
     },
     deletefutsal : async(id:any)=>{

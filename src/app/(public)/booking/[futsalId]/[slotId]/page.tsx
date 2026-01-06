@@ -34,6 +34,7 @@ export default function BookingPage() {
     customer_phone: "",
     customer_email: "",
   })
+  console.log("object")
 
   useEffect(() => {
     const token = localStorage.getItem("access_token")
@@ -41,6 +42,7 @@ export default function BookingPage() {
 
     const loadData = async () => {
       try {
+        console.log("jfiajfilasnflai")
         setLoading(true)
         const futsalId = params.futsalId
         const slotId = params.slotId
@@ -52,13 +54,14 @@ export default function BookingPage() {
         console.log(futsalData)
         console.log(slotsData)
         const selectedSlot = slotsData
+        console.log("this is " ,selectedSlot)
 
         if (!selectedSlot) {
           setError("Time slot not found")
           return
         }
 
-        if (selectedSlot.status !== "available") {
+        if (selectedSlot.status === "booked") {
           setError("This time slot is no longer available")
           return
         }

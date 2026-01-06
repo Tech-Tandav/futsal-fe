@@ -2,13 +2,10 @@
 
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
-// import { TimeSlotGrid } from "@/src/components/futsal/time-slot-grid"
-// import { Button } from "@/src/components/ui/button"
 import { Badge } from "@/src/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/ui/card"
 import { MapPin, DollarSign, ArrowLeft, Calendar } from "lucide-react"
 import { Spinner } from "@/src/components/ui/spinner"
-// import Header from "@/src/components/features/futsal/header"
 import { IFutsal } from '@/src/interface/futsalInterface'
 import { ITimeSlot } from "@/src/interface/timeSlotInterface"
 import { futsalServices } from '@/src/services/futsalSerivce'
@@ -30,17 +27,13 @@ export default function FutsalDetailPage() {
     const loadData = async () => {
       try {
         setLoading(true)
-        const futsalId = params.id
+        const futsalId = String(params.id)
         const [futsalData, slotsData] = await Promise.all([
           futsalServices.retrievefutsal(futsalId),
           timeSlotServices.getFilteredTimeSlot(futsalId)
         ])
-        if (futsalData) {
-          setFutsal(futsalData);
-        } else {
-          setFutsal(null); // Or undefined, depending on your state's allowed types
-        }
-        // setFutsal(futsalData)
+
+        setFutsal(futsalData)
         setTimeSlots(slotsData)
 
       } catch (error) {

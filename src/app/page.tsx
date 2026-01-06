@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import { Input } from "@/src/components/ui/input"
 import { Button } from "@/src/components/ui/button"
 import { Search, MapPin } from "lucide-react"
-import { toast } from 'sonner'
+
 
 const HomePage = () => {
 
@@ -27,10 +27,12 @@ const HomePage = () => {
         setFutsals(response)
       }catch(error){
         console.log("Failed to load futsals: ",error)
+        // toast.warning(`Failed to load futsals: ${error}`)
       }finally {
         setLoading(false)
       }
     }
+
   useEffect(()=>{
       fetchFutsals()
   },[])
