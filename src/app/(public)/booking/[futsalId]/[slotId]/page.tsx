@@ -44,7 +44,7 @@ export default function BookingPage() {
       try {
         console.log("jfiajfilasnflai")
         setLoading(true)
-        const futsalId = params.futsalId
+        const futsalId = String(params.futsalId)
         const slotId = params.slotId
 
         const [futsalData, slotsData] = await Promise.all([
