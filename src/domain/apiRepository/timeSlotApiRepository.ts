@@ -10,7 +10,7 @@ export const timeSlotApiRepository = {
     }
   },
 
-  retrieveTimeSlot: async (id: number) => {
+  retrieveTimeSlot: async (id: string) => {
     try {
       return await instance.get(`futsal/time-slots/${id}/`);
     } catch (e) {
