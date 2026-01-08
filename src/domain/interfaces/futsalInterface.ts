@@ -14,7 +14,7 @@ export interface IFutsalApi {
   latitude: number;
   longitude: number;
   price_per_hour: number;
-  amenities: number[];
+  amenities: string[];
   is_active: boolean;
   image: string;
   images: IFutsalImageApi[];
@@ -37,10 +37,9 @@ export interface IFutsal {
   latitude: number;
   longitude: number;
   pricePerHour: number;
-  amenities: number[];
+  amenities: string[];
   isActive: boolean;
   imageUrl: string;
   images: IFutsalImage[];
   createdAt: string;
-  distance: number
 }

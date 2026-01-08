@@ -28,7 +28,7 @@ export const futsalApiRepository = {
     }
   },
 
-  updateFutsal: async (id: number, data: FormData) => {
+  updateFutsal: async (id: string, data: FormData) => {
     try {
       return await instance.patch(`futsals/${id}/`, data);
     } catch (e) {
@@ -37,7 +37,7 @@ export const futsalApiRepository = {
     }
   },
 
-  deleteFutsal: async (id: number) => {
+  deleteFutsal: async (id: string) => {
     try {
       return await instance.delete(`futsals/${id}/`);
     } catch (e) {

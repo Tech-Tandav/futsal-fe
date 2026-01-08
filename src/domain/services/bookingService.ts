@@ -1,7 +1,7 @@
 import { bookingApiRepository } from "@/domain/apiRepository/bookingApiRepository";
 import { IBookingApi, IBooking } from "@/domain/interfaces/bookingInterface";
 import { mapBooking } from "../mappers/bookingMapper";
-// import { mapBooking } from "@/mappers/bookingMapper";
+
 
 export const bookingService = {
   getBookings: async (): Promise<IBooking[]> => {
