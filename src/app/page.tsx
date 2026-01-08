@@ -1,65 +1,107 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
+import { useEffect, useState } from "react"
+import { Header } from "@/components/custom/Header"
+import { FutsalCard } from "@/components/custom/FutsalCard"
+import { LocationPrompt } from "@/components/custom/LocationPrompt"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Search, MapPin, Zap } from "lucide-react"
+import { Spinner } from "@/components/ui/spinner"
+import { IFutsal } from "@/domain/interfaces/futsalInterface"
+import { futsalService } from "@/domain/services/futsalService"
+
+
+export default function HomePage() {
+  const [futsals, setFutsals] = useState<IFutsal[]>([])
+  const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null)
+  const [showLocationPrompt, setShowLocationPrompt] = useState(true)
+
+  const loadFutsals = async (lat?: number, lng?: number) => {
+    try {
+      setLoading(true)
+      const data = await futsalService.getFutsals()
+      setFutsals(data)
+    } catch (error) {
+      console.error("Failed to load futsals:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    loadFutsals()
+  }, [])
+
+  const handleLocationGranted = (lat: number, lng: number) => {
+    setUserLocation({ lat, lng })
+    setShowLocationPrompt(false)
+    loadFutsals(lat, lng)
+  }
+
+  const filteredFutsals = futsals.filter(
+    (futsal) =>
+      futsal.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      futsal.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      futsal.address.toLowerCase().includes(searchQuery.toLowerCase()),
+  )
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="min-h-screen bg-background">
+      <Header />
+
+      <main className="container mx-auto px-4 py-12">
+        <div className="mb-12 space-y-6">
+          <h1 className="text-4xl font-bold text-foreground">Find & Book Futsal Courts</h1>
+          <p className="text-lg text-foreground/70 max-w-2xl">
+            Discover futsal venues near you and book your slot instantly.
           </p>
+
+          {showLocationPrompt && !userLocation && (
+            <LocationPrompt onLocationGranted={handleLocationGranted} onDismiss={() => setShowLocationPrompt(false)} />
+          )}
+
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Search courts, cities..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            {!userLocation && (
+              <Button variant="outline" onClick={() => setShowLocationPrompt(true)}>
+                <MapPin className="mr-2 h-4 w-4" />
+                Location
+              </Button>
+            )}
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+
+        {loading ? (
+          <div className="flex min-h-100 items-center justify-center">
+            <Spinner className="h-8 w-8" />
+          </div>
+        ) : filteredFutsals.length === 0 ? (
+          <div className="text-center py-16">
+            <h2 className="text-2xl font-bold text-foreground">No courts found</h2>
+            <p className="text-foreground/60 mt-2">Try adjusting your search</p>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-foreground">{filteredFutsals.length} Venues Available</h2>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {filteredFutsals.map((futsal) => (
+                <FutsalCard key={futsal.id} futsal={futsal} />
+              ))}
+            </div>
+          </div>
+        )}
       </main>
     </div>
-  );
+  )
 }
