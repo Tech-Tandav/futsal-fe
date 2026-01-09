@@ -19,7 +19,7 @@ const page = () => {
           setBooking(book)
         }
         booking()
-    }, [params])
+    }, [])
   return (
     <div className="min-h-screen bg-background">
       <Header />

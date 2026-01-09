@@ -31,7 +31,7 @@ export default function OwnerDashboardPage() {
     // const userStr = localStorage.getItem("user")
 
     // if (!token) {
-    //   router.push("/login")
+    //   router.push("/login?redirect=/owner")
     //   return
     // }
 
