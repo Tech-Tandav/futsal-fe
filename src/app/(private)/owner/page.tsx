@@ -63,7 +63,7 @@ export default function OwnerDashboardPage() {
   const handleUpdateStatus = async (bookingId: string, status: "confirmed" | "rejected") => {
     try {
       setProcessingId(bookingId)
-      await bookingService.updateBookingStatus(bookingId, {status})
+      await bookingService.updateBookingStatus(bookingId, status)
       toast.success(`Booking ${status === "confirmed" ? "confirmed" : "rejected"} successfully`)
       await loadData()
     } catch (error) {
@@ -214,7 +214,7 @@ export default function OwnerDashboardPage() {
                           className="h-full w-full object-cover"
                         />
                       ) : (
-                        <div className="flex h-full items-center justify-center bg-gradient-to-br from-primary/20 to-accent/20">
+                        <div className="flex h-full items-center justify-center bg-linear-to-br from-primary/20 to-accent/20">
                           <span className="text-5xl font-bold text-primary/30">F</span>
                         </div>
                       )}
@@ -274,7 +274,7 @@ export default function OwnerDashboardPage() {
           <TabsContent value="pending" className="space-y-4">
             {pendingBookings.length === 0 ? (
               <Card>
-                <CardContent className="flex min-h-[200px] items-center justify-center">
+                <CardContent className="flex min-h-50 items-center justify-center">
                   <p className="text-muted-foreground">No pending bookings</p>
                 </CardContent>
               </Card>
@@ -359,7 +359,7 @@ export default function OwnerDashboardPage() {
           <TabsContent value="confirmed" className="space-y-4">
             {confirmedBookings.length === 0 ? (
               <Card>
-                <CardContent className="flex min-h-[200px] items-center justify-center">
+                <CardContent className="flex min-h-50 items-center justify-center">
                   <p className="text-muted-foreground">No confirmed bookings</p>
                 </CardContent>
               </Card>
@@ -402,7 +402,7 @@ export default function OwnerDashboardPage() {
           <TabsContent value="rejected" className="space-y-4">
             {rejectedBookings.length === 0 ? (
               <Card>
-                <CardContent className="flex min-h-[200px] items-center justify-center">
+                <CardContent className="flex min-h-50 items-center justify-center">
                   <p className="text-muted-foreground">No rejected bookings</p>
                 </CardContent>
               </Card>
@@ -442,7 +442,7 @@ export default function OwnerDashboardPage() {
           <TabsContent value="all" className="space-y-4">
             {bookings.length === 0 ? (
               <Card>
-                <CardContent className="flex min-h-[200px] items-center justify-center">
+                <CardContent className="flex min-h-50 items-center justify-center">
                   <p className="text-muted-foreground">No bookings</p>
                 </CardContent>
               </Card>

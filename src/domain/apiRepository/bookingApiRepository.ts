@@ -10,9 +10,9 @@ export const bookingApiRepository = {
     }
   },
 
-  retrieveBooking: async (id: number) => {
+  retrieveBooking: async (id: string) => {
     try {
-      return await instance.get(`bookings/${id}/`);
+      return await instance.get(`futsal/booking/${id}/`);
     } catch (e) {
       console.error("Failed to retrieve booking: ", e);
       throw e;
@@ -28,9 +28,9 @@ export const bookingApiRepository = {
     }
   },
 
-  updateBookingStatus: async (id: string, data: { status: string }) => {
+  updateBookingStatus: async (id: string, status:any) => {
     try {
-      return await instance.patch(`futsal/booking/${id}/`, data);
+      return await instance.patch(`futsal/booking/${id}/`, {status:status});
     } catch (e) {
       console.error("Failed to update booking: ", e);
       throw e;

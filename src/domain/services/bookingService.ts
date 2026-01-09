@@ -16,13 +16,14 @@ export const bookingService = {
     }
   },
 
-  retrieveBooking: async (id: number): Promise<IBooking | undefined> => {
+  retrieveBooking: async (id: string): Promise<IBooking | null> => {
     try {
       const response = await bookingApiRepository.retrieveBooking(id);
-      if (response?.status !== 200) return;
+      if (response?.status !== 200) return null;
       return mapBooking(response.data);
     } catch (e) {
       console.error("Failed to retrieve booking: ", e);
+      throw e
     }
   },
 
@@ -37,7 +38,7 @@ export const bookingService = {
 
   updateBookingStatus: async (id: string, status: any) => {
     try {
-      const response = await bookingApiRepository.updateBookingStatus(id, { status });
+      const response = await bookingApiRepository.updateBookingStatus(id, status );
       return mapBooking(response.data);
     } catch (e) {
       console.error("Failed to update booking status: ", e);

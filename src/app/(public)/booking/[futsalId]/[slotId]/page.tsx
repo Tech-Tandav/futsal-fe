@@ -34,9 +34,10 @@ export default function BookingPage() {
     customerPhone: "",
     customerEmail: "",
   })
-
+  const token = localStorage.getItem("access_token")
+  const [responseId, setResponseId] = useState("")
   useEffect(() => {
-    const token = localStorage.getItem("access_token")
+    
     const userStr = localStorage.getItem("user")
 
     const loadData = async () => {
@@ -97,7 +98,7 @@ export default function BookingPage() {
     setSubmitting(true)
 
     try {
-      await bookingService.createBooking({
+      const response = await bookingService.createBooking({
         futsal_id: params.futsalId,
         time_slot: params.slotId,
         customer_name: formData.customerName,
@@ -105,6 +106,8 @@ export default function BookingPage() {
         customer_email: formData.customerEmail,
         date: new Date().toISOString().slice(0, 10)
       })
+      // console.log("This is the ", response.id)
+      setResponseId(response.id)
       setSuccess(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create booking")
@@ -148,7 +151,16 @@ export default function BookingPage() {
                 </AlertDescription>
               </Alert>
               <div className="flex flex-col gap-2">
-                <Button onClick={() => router.push("/my-bookings")} className="w-full">
+                
+                <Button onClick={() => {
+                  if (token){
+                    router.push("/my-bookings")
+                  }else{
+                    router.push(`/new-booking/${responseId}`)
+                  }
+                  }
+                }  
+                className="w-full">
                   View My Bookings
                 </Button>
                 <Button onClick={() => router.push("/")} variant="outline" className="w-full">
