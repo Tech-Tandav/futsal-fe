@@ -51,7 +51,7 @@ export default function OwnerDashboardPage() {
       setLoading(true)
       const [bookingsData, futsalsData] = await Promise.all([bookingService.getBookings(), futsalService.getFutsals()])
       setBookings(bookingsData)
-      setFutsals(futsalsData)
+      setFutsals(futsalsData.results)
     } catch (error) {
       console.error("Failed to load data:", error)
       toast.error("Failed to load dashboard data")
