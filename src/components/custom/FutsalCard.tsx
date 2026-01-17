@@ -3,8 +3,7 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { MapPin, DollarSign, Star } from "lucide-react"
-// import type { Futsal } from "@/lib/django-api"
+import { MapPin, Star } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { IFutsal } from "@/domain/interfaces/futsalInterface"
 
@@ -14,7 +13,6 @@ interface FutsalCardProps {
 
 export function FutsalCard({ futsal }: FutsalCardProps) {
   const router = useRouter()
-
   return (
     <Card className="group overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/50">
       <div className="relative h-56 w-full overflow-hidden bg-linear-to-br from-primary/10 to-accent/10">
@@ -29,11 +27,11 @@ export function FutsalCard({ futsal }: FutsalCardProps) {
             <span className="text-8xl">⚽</span>
           </div>
         )}
-        {/* {futsal.distance !== undefined && (
+        {futsal.distance !== undefined && (
           <Badge className="absolute right-3 top-3 bg-background/95 text-foreground font-semibold shadow-lg">
             {futsal.distance.toFixed(1)} km away
           </Badge>
-        )} */}
+        )}
       </div>
 
       <CardHeader className="pb-3">
@@ -56,8 +54,8 @@ export function FutsalCard({ futsal }: FutsalCardProps) {
 
       <CardContent className="space-y-4 pb-4">
         <div className="flex items-center gap-2 text-xl font-bold text-primary">
-          <DollarSign className="h-5 w-5" />
-          <span>${futsal.pricePerHour}</span>
+          {/* <DollarSign className="h-5 w-5" /> */}
+          <span>Rs. {futsal.pricePerHour}</span>
           <span className="text-sm font-normal text-muted-foreground">/hour</span>
         </div>
 
@@ -80,7 +78,7 @@ export function FutsalCard({ futsal }: FutsalCardProps) {
       <CardFooter>
         <Button
           onClick={() => router.push(`/futsal/${futsal.id}`)}
-          className="w-full bg-primary hover:bg-primary/90 font-semibold"
+          className="w-full bg-primary hover:bg-primary/70 font-semibold"
         >
           View & Book
         </Button>

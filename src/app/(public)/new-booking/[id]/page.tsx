@@ -2,6 +2,7 @@
 import { Header } from '@/components/custom/Header'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Spinner } from '@/components/ui/spinner'
 import { IBooking } from '@/domain/interfaces/bookingInterface'
 import { bookingService } from '@/domain/services/bookingService'
 import {  Calendar, Clock, User } from 'lucide-react'
@@ -12,14 +13,22 @@ const page = () => {
     const params = useParams()
     const bookingId = String(params.id)
     const [booking, setBooking] = useState<IBooking | null>(null)
-
+    const [loading, setLoading] = useState(true)
     useEffect(()=>{
+      try {
+        setLoading(true)
         const booking = async()=>{
           const book = await bookingService.retrieveBooking(bookingId)
           setBooking(book)
         }
         booking()
+      } catch (error) {
+        console.log("Failed to load booking details")
+      } finally {
+        setLoading(false)
+      }
     }, [])
+    
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -29,11 +38,13 @@ const page = () => {
 
           {booking === null ? (
           <Card>
-            <CardContent className="flex min-h-75 items-center justify-center">
-              <div className="text-center space-y-2">
-                <p className="text-lg font-medium">No bookings yet</p>
-                <p className="text-muted-foreground">Start booking futsal courts to see them here</p>
+            <CardContent className="flex min-h-43 items-center justify-center">
+              
+              <div className="text-center space-y-3">
+                <Spinner className="mx-auto h-8 w-8" />
+                <p className="text-muted-foreground">Loading booking details...</p>
               </div>
+              
             </CardContent>
           </Card>
         ) : (

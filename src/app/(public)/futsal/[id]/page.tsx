@@ -14,6 +14,15 @@ import { IFutsal } from "@/domain/interfaces/futsalInterface"
 import { ITimeSlot } from "@/domain/interfaces/timeSlotInterface"
 import { futsalService } from "@/domain/services/futsalService"
 import { timeSlotService } from "@/domain/services/timeSlotService"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 
 export default function FutsalDetailPage() {
   const params = useParams()
@@ -22,6 +31,7 @@ export default function FutsalDetailPage() {
   const [timeSlots, setTimeSlots] = useState<ITimeSlot[]>([])
   const [selectedSlot, setSelectedSlot] = useState<ITimeSlot | null>(null)
   const [loading, setLoading] = useState(true)
+
 
   useEffect(() => {
     const loadData = async () => {
@@ -128,8 +138,8 @@ export default function FutsalDetailPage() {
                 </div>
 
                 <div className="flex items-center gap-2 text-lg font-semibold text-primary">
-                  <DollarSign className="h-5 w-5" />
-                  <span>${futsal.pricePerHour}/hour</span>
+                  {/* <DollarSign className="h-5 w-5" /> */}
+                  <span>Rs. {futsal.pricePerHour}/hour</span>
                 </div>
 
                 {futsal.amenities && futsal.amenities.length > 0 && (
@@ -171,22 +181,42 @@ export default function FutsalDetailPage() {
                 <TimeSlotGrid timeSlots={timeSlots} onSlotClick={handleSlotClick} selectedSlotId={selectedSlot?.id} />
 
                 {selectedSlot && (
-                  <div className="flex items-center justify-between rounded-lg border bg-muted/50 p-4">
-                    <div>
-                      <p className="font-medium">Selected Time Slot</p>
-                      <p className="text-sm text-muted-foreground">
-                        {
-                          ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][
-                            selectedSlot.dayOfWeek
-                          ]
-                        }{" "}
-                        at {selectedSlot.startTime} - {selectedSlot.endTime}
-                      </p>
-                    </div>
-                    <Button onClick={handleBooking} size="lg">
-                      Continue to Booking
-                    </Button>
-                  </div>
+                  <Dialog open={!!selectedSlot} onOpenChange={(v) => !v && setSelectedSlot(null)}>
+                    <DialogContent className="w-[95vw] max-w-md sm:max-w-lg">
+                      <DialogHeader>
+                        <DialogTitle className="text-lg sm:text-xl">
+                          Confirm Booking
+                        </DialogTitle>
+                        <DialogDescription />
+                      </DialogHeader>
+
+                      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-lg border bg-muted/50 p-4">
+                        <div>
+                          <p className="font-medium text-sm sm:text-base">
+                            Selected Time Slot
+                          </p>
+                          <p className="text-xs sm:text-sm text-muted-foreground">
+                            {
+                              ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][
+                                selectedSlot.dayOfWeek
+                              ]
+                            }{" "}
+                            at {selectedSlot.startTime} - {selectedSlot.endTime}
+                          </p>
+                        </div>
+
+                        <Button
+                          onClick={handleBooking}
+                          size="lg"
+                          className="w-full sm:w-auto"
+                        >
+                          Continue to Booking
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+
+
                 )}
               </CardContent>
             </Card>

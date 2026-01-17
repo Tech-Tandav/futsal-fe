@@ -10,20 +10,38 @@ import { Search, MapPin, Zap } from "lucide-react"
 import { Spinner } from "@/components/ui/spinner"
 import { IFutsal } from "@/domain/interfaces/futsalInterface"
 import { futsalService } from "@/domain/services/futsalService"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
 
+export interface ILocation { 
+  lat: number; lng: number 
+}
 
 export default function HomePage() {
   const [futsals, setFutsals] = useState<IFutsal[]>([])
   const [loading, setLoading] = useState(true)
+  const [next, setNext] = useState<string | null>(null)
+  const [previous, setPrevious] = useState<string | null>(null)
+
   const [searchQuery, setSearchQuery] = useState("")
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null)
   const [showLocationPrompt, setShowLocationPrompt] = useState(true)
 
-  const loadFutsals = async (lat?: number, lng?: number) => {
+  const loadFutsals = async (userLocation?:ILocation) => {
     try {
       setLoading(true)
-      const data = await futsalService.getFutsals()
-      setFutsals(data)
+      const data = await futsalService.getFutsals(userLocation)
+      console.log(data)
+      setFutsals(data.results)
+      setNext(data.next)
+      setPrevious(data.previous)
     } catch (error) {
       console.error("Failed to load futsals:", error)
     } finally {
@@ -38,7 +56,7 @@ export default function HomePage() {
   const handleLocationGranted = (lat: number, lng: number) => {
     setUserLocation({ lat, lng })
     setShowLocationPrompt(false)
-    loadFutsals(lat, lng)
+    loadFutsals({lat, lng})
   }
 
   const filteredFutsals = futsals.filter(
@@ -92,15 +110,40 @@ export default function HomePage() {
             <p className="text-foreground/60 mt-2">Try adjusting your search</p>
           </div>
         ) : (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-foreground">{filteredFutsals.length} Venues Available</h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {filteredFutsals.map((futsal) => (
-                <FutsalCard key={futsal.id} futsal={futsal} />
-              ))}
+          <>
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold text-foreground">{filteredFutsals.length} Venues Available</h2>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {filteredFutsals.map((futsal) => (
+                  <FutsalCard key={futsal.id} futsal={futsal} />
+                ))}
+              </div>
             </div>
-          </div>
+            {/* <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious href={previous ?? undefined} />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#">1</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#" isActive>2</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#">3</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationNext href={next ?? undefined} />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination> */}
+          </>
         )}
+        
       </main>
     </div>
   )

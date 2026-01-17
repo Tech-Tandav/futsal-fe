@@ -21,4 +21,5 @@ export const mapFutsal = (futsal: IFutsalApi): IFutsal => ({
     imageUrl:img.image,
   })),
   createdAt: futsal.created_at,
+  distance:futsal.distance
 });

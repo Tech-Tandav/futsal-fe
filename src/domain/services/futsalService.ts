@@ -1,16 +1,21 @@
 import { futsalApiRepository } from "@/domain/apiRepository/futsalApiRepository";
 import { IFutsalApi, IFutsal, IFutsalImageApi, IFutsalImage } from "@/domain/interfaces/futsalInterface";
 import { mapFutsal } from "@/domain/mappers/futsalMapper";
+import { IResponseApi } from "../interfaces/apiResponse";
+import { ILocation } from "@/app/page";
 
 
 export const futsalService = {
-  getFutsals: async (): Promise<IFutsal[]> => {
+  getFutsals: async (userLocation?:ILocation): Promise<IResponseApi<IFutsal[]>> => {
     try {
-      const response = await futsalApiRepository.getFutsals();
-      if (response.status !== 200) return [];
-      const rawData = response.data.results;
-      return rawData.map(mapFutsal);
-    } catch (e) {
+      const response = await futsalApiRepository.getFutsals(userLocation);
+      const apiResponse = response.data;
+      const mapData = apiResponse.results.map(mapFutsal);
+      return {
+        ...apiResponse,
+        results:mapData
+      }
+    }catch (e) {
       console.error("Failed to get futsals: ", e);
       throw e;
     }

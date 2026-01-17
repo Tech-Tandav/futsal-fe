@@ -19,6 +19,7 @@ export interface IFutsalApi {
   image: string;
   images: IFutsalImageApi[];
   created_at: string;
+  distance:number;
 }
 
 // --------------------------
@@ -42,4 +43,5 @@ export interface IFutsal {
   imageUrl: string;
   images: IFutsalImage[];
   createdAt: string;
+  distance:number
 }
