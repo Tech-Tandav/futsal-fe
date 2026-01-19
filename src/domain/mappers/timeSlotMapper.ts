@@ -14,6 +14,12 @@ export const mapTimeSlot = (slot: ITimeSlotApi): ITimeSlot => ({
   endTime: slot.end_time,
   status: slot.status,
   dayName: slot.day_name,
-  booking : slot.booking
+  booking : slot.booking.map((book)=>({
+    customerName:book.customer_name,
+    id:book.id,
+    customerPhone:book.customer_phone,
+    status:book.status,
+    date:book.date
+  }))
 });
 
