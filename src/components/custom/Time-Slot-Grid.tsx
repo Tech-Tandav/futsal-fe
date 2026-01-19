@@ -105,7 +105,7 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-lg border">
+      <div className="overflow-x-scroll rounded-lg border">
         <table className="w-full">
           <thead>
             <tr className="border-b bg-muted/50">

@@ -115,7 +115,7 @@ export default function FutsalDetailPage() {
           Back to Listings
         </Button>
 
-        <div className="grid gap-8 lg:grid-cols-3">
+        <div className="grid gap-8 grid-cols-1 lg:grid-cols-3">
           <div className="lg:col-span-1">
             <Card>
               <div className="relative h-64 w-full overflow-hidden rounded-t-lg bg-muted">
