@@ -22,6 +22,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 
 export default function FutsalDetailPage() {
@@ -31,7 +32,7 @@ export default function FutsalDetailPage() {
   const [timeSlots, setTimeSlots] = useState<ITimeSlot[]>([])
   const [selectedSlot, setSelectedSlot] = useState<ITimeSlot | null>(null)
   const [loading, setLoading] = useState(true)
-
+  const [isStaff, setStaff] = useState(false)
 
   useEffect(() => {
     const loadData = async () => {
@@ -45,6 +46,11 @@ export default function FutsalDetailPage() {
 
         setFutsal(futsalData)
         setTimeSlots(slotsData)
+        const user = localStorage.getItem("user")
+        if (user){
+          const isStaff = JSON.parse(user).isStaff
+          setStaff(isStaff)
+        }
 
       } catch (error) {
         console.error("Failed to load futsal details:", error)
@@ -66,7 +72,6 @@ export default function FutsalDetailPage() {
     //   router.push("/login")
     //   return
     // }
-
     if (selectedSlot) {
       router.push(`/booking/${futsal?.id}/${selectedSlot.id}`)
     }
@@ -96,6 +101,9 @@ export default function FutsalDetailPage() {
       </div>
     )
   }
+
+
+  
 
   return (
     <div className="min-h-screen bg-background">
@@ -166,11 +174,6 @@ export default function FutsalDetailPage() {
                     <Calendar className="h-5 w-5" />
                     <CardTitle>Available Time Slots</CardTitle>
                   </div>
-                  {selectedSlot && (
-                    <Badge variant="default" className="text-sm">
-                      Selected Slot
-                    </Badge>
-                  )}
                 </div>
                 <p className="text-sm text-muted-foreground">
                   Select a time slot to book. Weekdays are in columns, time slots are in rows.
@@ -178,17 +181,59 @@ export default function FutsalDetailPage() {
               </CardHeader>
 
               <CardContent className="space-y-4">
-                <TimeSlotGrid timeSlots={timeSlots} onSlotClick={handleSlotClick} selectedSlotId={selectedSlot?.id} />
+                <TimeSlotGrid timeSlots={timeSlots} onSlotClick={handleSlotClick} selectedSlotId={selectedSlot?.id} isStaff={isStaff}/>
 
                 {selectedSlot && (
                   <Dialog open={!!selectedSlot} onOpenChange={(v) => !v && setSelectedSlot(null)}>
-                    <DialogContent className="w-[95vw] max-w-md sm:max-w-lg">
+                    <DialogContent className="max-h-screen">
                       <DialogHeader>
                         <DialogTitle className="text-lg sm:text-xl">
                           Confirm Booking
                         </DialogTitle>
                         <DialogDescription />
                       </DialogHeader>
+                      {isStaff && selectedSlot.booking.length > 0 &&(
+                        <div className="mt-4 rounded-xl border bg-muted/40 p-4 shadow-sm max-h-80 overflow-y-auto">
+                          <h4 className="mb-3 text-sm font-semibold text-muted-foreground">
+                            Booking Details
+                          </h4>
+
+                          <div className="space-y-3">
+                            {selectedSlot.booking.map((book) => (
+                              <div
+                                key={book.id}
+                                className="rounded-lg bg-background p-3 shadow-sm transition hover:shadow-md"
+                              >
+                                <div className="flex items-center justify-between gap-3">
+                                  <p className="font-medium">{book.customerName}</p>
+
+                                  <Select
+                                    defaultValue={book.status}
+                                    // onValueChange={(value) => handleStatusChange(book.id, value)}
+                                  >
+                                    <SelectTrigger className="h-7 w-32.5 text-xs">
+                                      <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="confirmed">Confirmed</SelectItem>
+                                      <SelectItem value="pending">Pending</SelectItem>
+                                      <SelectItem value="cancelled">Cancelled</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                </div>
+
+                                <div className="mt-2 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                                  <p>{book.customerPhone}</p>
+                                  <p>{book.date}</p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                                            
+                      )}
+                        
+                      
 
                       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-lg border bg-muted/50 p-4">
                         <div>

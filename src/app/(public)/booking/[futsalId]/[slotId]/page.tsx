@@ -240,7 +240,7 @@ export default function BookingPage() {
 
                 <div className="rounded-lg border bg-primary/5 p-4">
                   <p className="text-sm font-medium text-muted-foreground">Total Price</p>
-                  <p className="text-2xl font-bold text-primary">${futsal?.pricePerHour}</p>
+                  <p className="text-2xl font-bold text-primary">Rs. {futsal?.pricePerHour}</p>
                   <p className="text-xs text-muted-foreground">For 1 hour</p>
                 </div>
               </CardContent>

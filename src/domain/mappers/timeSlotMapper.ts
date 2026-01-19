@@ -14,5 +14,6 @@ export const mapTimeSlot = (slot: ITimeSlotApi): ITimeSlot => ({
   endTime: slot.end_time,
   status: slot.status,
   dayName: slot.day_name,
+  booking : slot.booking
 });
 

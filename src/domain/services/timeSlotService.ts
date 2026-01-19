@@ -1,5 +1,5 @@
 import { timeSlotApiRepository } from "@/domain/apiRepository/timeSlotApiRepository";
-import { ITimeSlotApi, ITimeSlot } from "@/domain/interfaces/timeSlotInterface";
+import { ITimeSlotApi, ITimeSlot, IBookingDetailApi, IBookingDetail } from "@/domain/interfaces/timeSlotInterface";
 import { mapTimeSlot } from "@/domain/mappers/timeSlotMapper";
 
 export const timeSlotService = {
@@ -64,6 +64,13 @@ export const timeSlotService = {
         endTime: slot.end_time,
         status: slot.status,
         dayName: slot.day_name,
+        booking: slot.booking.map((book:IBookingDetailApi): IBookingDetail=>({
+          customerName:book.customer_name,
+          id:book.id,
+          customerPhone:book.customer_phone,
+          status:book.status,
+          date:book.date
+        }))
       }))
     } catch (e) {
       console.error("Failed to get time slots: ", e);

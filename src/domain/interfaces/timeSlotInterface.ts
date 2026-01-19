@@ -1,6 +1,15 @@
 // --------------------------
 // TimeSlot API and frontend
 // --------------------------
+
+export interface IBookingDetailApi{
+  customer_name:string;
+  customer_phone:string;
+  id:string;
+  status:string;
+  date:string
+}
+
 export interface ITimeSlotApi {
   id: number;
   futsal: number;
@@ -10,6 +19,15 @@ export interface ITimeSlotApi {
   end_time: string;
   status: "available" | "booked" | "in_queue";
   day_name: string;
+  booking: IBookingDetailApi[] 
+}
+
+export interface IBookingDetail{
+  customerName:string;
+  customerPhone:string;
+  id:string;
+  status:string;
+  date:string
 }
 
 export interface ITimeSlot {
@@ -21,4 +39,5 @@ export interface ITimeSlot {
   endTime: string;
   status: "available" | "booked" | "in_queue";
   dayName: string;
+  booking: IBookingDetail[] 
 }

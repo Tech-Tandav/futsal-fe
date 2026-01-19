@@ -14,6 +14,7 @@ interface TimeSlotGridProps {
   timeSlots: ITimeSlot[]
   onSlotClick: (slot: ITimeSlot) => void
   selectedSlotId?: number
+  isStaff: boolean
 }
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
@@ -39,11 +40,10 @@ const TIME_SLOTS = [
   "23:00:00",
 ]
 
-export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId }: TimeSlotGridProps) {
+export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }: TimeSlotGridProps) {
   const today = new Date()
   const todayIndex = today.getDay()
   const currentHour = today.getHours()
-
   const orderedDays = Array.from({ length: 7 }, (_, i) => {
     const date = new Date()
     date.setDate(today.getDate() + i)
@@ -79,7 +79,7 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId }: TimeSlo
         return "ghost"
     }
   }
-
+  
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-4 flex-wrap">
@@ -137,6 +137,7 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId }: TimeSlo
                   const isPast = colIndex === 0 && slotHour < currentHour
                   const isSelected = slot?.id === selectedSlotId
                   const status = getSlotStatus(slot, isPast)
+                  const isDisable = !isStaff && (!slot || (status !== "available" && status !== "in_queue"));
 
                   return (
                     <td key={day.index} className={cn("px-2 py-2", colIndex === 0 && "bg-primary/5")}>
@@ -145,13 +146,14 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId }: TimeSlo
                         size="sm"
                         className={cn(
                           "h-10 w-full text-xs",
-                          (status === "booked" || status === "past") && "cursor-not-allowed opacity-60",
+                          (status === "booked" || status === "past") && "opacity-60",
+                          isDisable && "cursor-not-allowed",
                           status === "unavailable" && "cursor-not-allowed opacity-40",
                           isSelected && "ring-2 ring-ring",
                           status === "in_queue" && "bg-primary/5 border-primary/30",
                         )}
-                        onClick={() => slot && (status === "available" || status === "in_queue") && onSlotClick(slot)}
-                        disabled={!slot || (status !== "available" && status !== "in_queue")}
+                        onClick={() => !isDisable && slot && onSlotClick(slot)}
+                        disabled={isDisable}
                       >
                         {slot ? (
                           <>
