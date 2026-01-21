@@ -13,9 +13,12 @@ instance.interceptors.request.use((config)=>{
 
 instance.interceptors.request.use(
     config => {
-        const token = localStorage.getItem('token')
-        if (token){
-            config.headers.Authorization = `Token ${token}`
+        const user = localStorage.getItem('user')
+        if (user){
+            const token = JSON.parse(user).token
+            if (token){
+                config.headers.Authorization = `Token ${token}`
+            }
         }
         return config
     }

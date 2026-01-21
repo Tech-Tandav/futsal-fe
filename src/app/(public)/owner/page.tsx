@@ -121,21 +121,19 @@ export default function OwnerDashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
+      
         <div className="flex min-h-150 items-center justify-center">
           <div className="text-center space-y-3">
             <Spinner className="mx-auto h-8 w-8" />
             <p className="text-muted-foreground">Loading dashboard...</p>
           </div>
         </div>
-      </div>
+      
     )
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
+    
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6">
@@ -483,6 +481,6 @@ export default function OwnerDashboardPage() {
           </TabsContent>
         </Tabs>
       </main>
-    </div>
+  
   )
 }

@@ -15,6 +15,7 @@ export const authApiRepository = {
             return await authInstance.post("login/", data)
         }catch(e){
             console.error("Failed in login api repo: ", e)
+            throw e
         }
     },
 

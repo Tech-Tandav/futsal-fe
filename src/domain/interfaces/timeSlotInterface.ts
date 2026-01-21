@@ -7,7 +7,7 @@ export interface IBookingDetailApi{
   customer_phone:string;
   id:string;
   status:string;
-  date:string
+  created_at:string
 }
 
 export interface ITimeSlotApi {
@@ -27,7 +27,7 @@ export interface IBookingDetail{
   customerPhone:string;
   id:string;
   status:string;
-  date:string
+  created_at:string
 }
 
 export interface ITimeSlot {

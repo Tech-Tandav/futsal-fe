@@ -10,53 +10,35 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { authApiRepository } from "@/domain/apiRepository/authApiRepository"
-// import { djangoAPI } from "@/lib/django-api"
 import { userService } from "@/domain/services/userService"
+import { authServices } from "@/domain/services/authService"
 
 
-const fillDemoAccount = (
-  type: "owner" | "customer" | "admin",
-  setEmail: React.Dispatch<React.SetStateAction<string>>,
-  setPassword: React.Dispatch<React.SetStateAction<string>>,
-) => {
-  if (type === "owner") {
-    setEmail("owner@demo.com")
-    setPassword("demo123")
-  } else if (type === "admin") {
-    setEmail("admin@demo.com")
-    setPassword("demo123")
-  } else {
-    setEmail("customer@demo.com")
-    setPassword("demo123")
-  }
-}
 
 export default function LoginPage() {
   const router = useRouter()
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const [loginData, setLoginData] = useState({username:"", password:""})
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
+  const handleChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
+    const {name, value} = e.target
+    console.log(loginData)
+    setLoginData({
+      ...loginData,
+      [name]:value
+    })
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError("")
     setLoading(true)
-
     try {
-      const response = await authApiRepository.login({username, password})
-      localStorage.setItem('token', response?.data.token)
-      try {
-        const token = localStorage.getItem('token')
-        if (token){
-          const user = await userService.meUser();
-          localStorage.setItem('user', JSON.stringify(user))
-        }
-      } catch (e) {
-        console.error(e);
-      }
+      const response = await authServices.login(loginData)
+      localStorage.setItem('user',JSON.stringify(response))
       router.push("/")
     } catch (err) {
+      console.log(err)
       setError(err instanceof Error ? err.message : "Failed to login")
     } finally {
       setLoading(false)
@@ -71,42 +53,7 @@ export default function LoginPage() {
           <CardDescription>Enter your credentials to access your account</CardDescription>
         </CardHeader>
         <CardContent>
-          {/* {!process.env.NEXT_PUBLIC_DJANGO_API_URL && (
-            <Alert className="mb-4 border-primary/50 bg-primary/5">
-              <AlertDescription className="text-sm">
-                <p className="font-medium mb-3">Demo Mode - Quick Login:</p>
-                <div className="flex flex-col gap-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="w-full bg-transparent"
-                    onClick={() => fillDemoAccount("customer", setEmail, setPassword)}
-                  >
-                    Login as Customer
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="w-full bg-transparent"
-                    onClick={() => fillDemoAccount("owner", setEmail, setPassword)}
-                  >
-                    Login as Owner
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="w-full bg-transparent"
-                    onClick={() => fillDemoAccount("admin", setEmail, setPassword)}
-                  >
-                    Login as Admin
-                  </Button>
-                </div>
-              </AlertDescription>
-            </Alert>
-          )} */}
+          
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
@@ -121,8 +68,8 @@ export default function LoginPage() {
                 id="username"
                 type="text"
                 placeholder="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={handleChange}
+                name="username"
                 required
               />
             </div>
@@ -133,8 +80,8 @@ export default function LoginPage() {
                 id="password"
                 type="password"
                 placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                onChange={handleChange}
                 required
               />
             </div>

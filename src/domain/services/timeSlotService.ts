@@ -69,7 +69,7 @@ export const timeSlotService = {
           id:book.id,
           customerPhone:book.customer_phone,
           status:book.status,
-          date:book.date
+          created_at:book.created_at
         }))
       }))
     } catch (e) {

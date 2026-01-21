@@ -23,7 +23,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { cn } from "@/lib/utils"
 
+const statusColorMap: Record<string, string> = {
+  confirmed: "bg-green-500/10 text-green-600 border-green-500/20",
+  pending: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20",
+  cancelled: "bg-red-500/10 text-red-600 border-red-500/20",
+}
 
 export default function FutsalDetailPage() {
   const params = useParams()
@@ -48,7 +54,8 @@ export default function FutsalDetailPage() {
         setTimeSlots(slotsData)
         const user = localStorage.getItem("user")
         if (user){
-          const isStaff = JSON.parse(user).isStaff
+          const isStaff = JSON.parse(user).is_staff
+          console.log("user is ",isStaff)
           setStaff(isStaff)
         }
 
@@ -67,11 +74,6 @@ export default function FutsalDetailPage() {
   }
 
   const handleBooking = () => {
-    // const token = localStorage.getItem("access_token")
-    // if (!token) {
-    //   router.push("/login")
-    //   return
-    // }
     if (selectedSlot) {
       router.push(`/booking/${futsal?.id}/${selectedSlot.id}`)
     }
@@ -79,26 +81,26 @@ export default function FutsalDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
+      // <div className="min-h-screen bg-background">
+      //   <Header />
         <div className="flex min-h-150 items-center justify-center">
           <div className="text-center space-y-3">
             <Spinner className="mx-auto h-8 w-8" />
             <p className="text-muted-foreground">Loading futsal details...</p>
           </div>
         </div>
-      </div>
+      // </div>
     )
   }
 
   if (!futsal) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
+      // <div className="min-h-screen bg-background">
+      //   <Header />
         <div className="container mx-auto px-4 py-8">
           <p className="text-center text-muted-foreground">Futsal not found</p>
         </div>
-      </div>
+      // </div>
     )
   }
 
@@ -106,8 +108,8 @@ export default function FutsalDetailPage() {
   
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
+    // <div className="min-h-screen bg-background">
+    //   <Header />
 
       <main className="container mx-auto px-4 py-8">
         <Button variant="ghost" onClick={() => router.back()} className="mb-6">
@@ -180,7 +182,7 @@ export default function FutsalDetailPage() {
                 </p>
               </CardHeader>
 
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 ">
                 <TimeSlotGrid timeSlots={timeSlots} onSlotClick={handleSlotClick} selectedSlotId={selectedSlot?.id} isStaff={isStaff}/>
 
                 {selectedSlot && (
@@ -192,49 +194,76 @@ export default function FutsalDetailPage() {
                         </DialogTitle>
                         <DialogDescription />
                       </DialogHeader>
-                      {isStaff && selectedSlot.booking.length > 0 &&(
-                        <div className="mt-4 rounded-xl border bg-muted/40 p-4 shadow-sm max-h-80 overflow-y-auto">
+                      {isStaff && selectedSlot.booking.length > 0 && (
+                        <div className="mt-4 rounded-xl border bg-muted/40 p-4 shadow-sm max-h-80 overflow-auto">
                           <h4 className="mb-3 text-sm font-semibold text-muted-foreground">
                             Booking Details
                           </h4>
 
-                          <div className="space-y-3">
-                            {selectedSlot.booking.map((book) => (
-                              <div
-                                key={book.id}
-                                className="rounded-lg bg-background p-3 shadow-sm transition hover:shadow-md"
-                              >
-                                <div className="flex items-center justify-between gap-3">
-                                  <p className="font-medium">{book.customerName}</p>
+                          <div className="overflow-x-auto">
+                            <table className="w-full border-collapse text-xs">
+                              <thead>
+                                <tr className="border-b text-muted-foreground">
+                                  <th className="w-8 px-2 py-2 text-left font-medium">#</th>
+                                  <th className="px-3 py-2 text-left font-medium">Customer</th>
+                                  <th className="px-3 py-2 text-left font-medium">Phone</th>
+                                  <th className="px-3 py-2 text-left font-medium">Booked At</th>
+                                  <th className="px-3 py-2 text-left font-medium">Status</th>
+                                </tr>
+                              </thead>
 
-                                  <Select
-                                    defaultValue={book.status}
-                                    // onValueChange={(value) => handleStatusChange(book.id, value)}
+                              <tbody>
+                                {selectedSlot.booking.map((book, index) => (
+                                  <tr
+                                    key={book.id}
+                                    className="border-b last:border-0 hover:bg-background/60 transition"
                                   >
-                                    <SelectTrigger className="h-7 w-32.5 text-xs">
-                                      <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      <SelectItem value="confirmed">Confirmed</SelectItem>
-                                      <SelectItem value="pending">Pending</SelectItem>
-                                      <SelectItem value="cancelled">Cancelled</SelectItem>
-                                    </SelectContent>
-                                  </Select>
-                                </div>
+                                    {/* Row number */}
+                                    <td className="px-2 py-2 text-muted-foreground">
+                                      {index + 1}
+                                    </td>
 
-                                <div className="mt-2 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
-                                  <p>{book.customerPhone}</p>
-                                  <p>{book.date}</p>
-                                </div>
-                              </div>
-                            ))}
+                                    <td className="px-3 py-2 font-medium">
+                                      {book.customerName}
+                                    </td>
+
+                                    <td className="px-3 py-2 text-muted-foreground">
+                                      {book.customerPhone}
+                                    </td>
+
+                                    <td className="px-3 py-2 text-muted-foreground whitespace-nowrap">
+                                      {book.created_at}
+                                    </td>
+
+                                    {/* Status */}
+                                    <td className="px-3 py-2">
+                                      <Select
+                                        defaultValue={book.status}
+                                        // onValueChange={(value) => handleStatusChange(book.id, value)}
+                                      >
+                                        <SelectTrigger
+                                          className={cn(
+                                            "h-7 w-28 text-xs border",
+                                            statusColorMap[book.status]
+                                          )}
+                                        >
+                                          <SelectValue />
+                                        </SelectTrigger>
+
+                                        <SelectContent>
+                                          <SelectItem value="confirmed">Confirmed</SelectItem>
+                                          <SelectItem value="pending">Pending</SelectItem>
+                                          <SelectItem value="cancelled">Cancelled</SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
                           </div>
                         </div>
-                                            
-                      )}
-                        
-                      
-
+                      )}                        
                       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-lg border bg-muted/50 p-4">
                         <div>
                           <p className="font-medium text-sm sm:text-base">
@@ -260,14 +289,12 @@ export default function FutsalDetailPage() {
                       </div>
                     </DialogContent>
                   </Dialog>
-
-
                 )}
               </CardContent>
             </Card>
           </div>
         </div>
       </main>
-    </div>
+   
   )
 }

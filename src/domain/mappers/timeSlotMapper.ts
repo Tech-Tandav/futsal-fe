@@ -19,7 +19,7 @@ export const mapTimeSlot = (slot: ITimeSlotApi): ITimeSlot => ({
     id:book.id,
     customerPhone:book.customer_phone,
     status:book.status,
-    date:book.date
+    created_at:book.created_at
   }))
 });
 

@@ -12,34 +12,30 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { User, LogOut, LayoutDashboard, Building2 } from "lucide-react"
-import { IUser } from "@/domain/interfaces/userInterface"
-import { userService } from "@/domain/services/userService"
+import { User, LogOut } from "lucide-react"
 
 
 export function Header() {
   const router = useRouter()
-  const [user, setUser] = useState<IUser | null>(null)
+  const [user, setUser] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchUser =  () => {
       const userStr = localStorage.getItem("user")
-      if (userStr){
-        setUser(JSON.parse(userStr))
-      }
-
+      if (userStr){setUser(JSON.parse(userStr))}
+      setLoading(false)
     };
     fetchUser();
   }, [])
 
   const handleLogout = () => {
-    localStorage.removeItem("token")
+    localStorage.removeItem("user")
     setUser(null)
-    router.push("/login")
+    router.push("/")
   }
 
   const isAuthenticated = !!user
-
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -48,48 +44,25 @@ export function Header() {
         </Link>
 
         <nav className="flex items-center gap-2">
-          {isAuthenticated ? (
+          
+          {loading ?
+            <></>
+          : isAuthenticated ? (
             <>
               <Link href="/">
                 <Button variant="ghost" className="text-sm font-medium">
                   Discover
                 </Button>
               </Link>
-
-              {user?.isStaff === false && (
-                <Link href="/my-bookings">
-                  <Button variant="ghost" className="text-sm font-medium">
-                    My Bookings
-                  </Button>
-                </Link>
-              )}
-
-              {user?.isStaff === true && (
-                <Link href="/owner/dashboard">
-                  <Button variant="ghost" className="text-sm font-medium">
-                    <Building2 className="mr-2 h-4 w-4" />
-                    Dashboard
-                  </Button>
-                </Link>
-              )}
-
-              {/* {user?.isStaff === "admin" && (
-                <Link href="/admin/dashboard">
-                  <Button variant="ghost" className="text-sm font-medium">
-                    <LayoutDashboard className="mr-2 h-4 w-4" />
-                    Admin
-                  </Button>
-                </Link>
-              )} */}
-
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="icon" className="rounded-full bg-transparent">
                     <User className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>{user?.username}</DropdownMenuLabel>
+                <DropdownMenuContent align="end" >
+                  <DropdownMenuLabel>{user.username.toUpperCase()}</DropdownMenuLabel>
+                  <DropdownMenuLabel>{user.is_staff ? "Staff" : ""}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />

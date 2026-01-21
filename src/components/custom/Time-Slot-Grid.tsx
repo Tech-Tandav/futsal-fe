@@ -1,14 +1,9 @@
 "use client"
 
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
-// import type { TimeSlot, Booking } from "@/lib/django-api"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { ITimeSlot } from "@/domain/interfaces/timeSlotInterface"
-import { IBooking } from "@/domain/interfaces/bookingInterface"
+
 
 interface TimeSlotGridProps {
   timeSlots: ITimeSlot[]
@@ -16,6 +11,7 @@ interface TimeSlotGridProps {
   selectedSlotId?: number
   isStaff: boolean
 }
+
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
@@ -50,7 +46,8 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }
     return {
       index: date.getDay(),
       label: DAYS[date.getDay()],
-      dateStr: date.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+      dateStr: date.toLocaleDateString("en-CA", { month: "short", day: "numeric", timeZone: "Asia/Kathmandu" }),
+      fullDate: date.toLocaleDateString("en-CA", {timeZone:"Asia/Kathmandu"})
     }
   })
 
@@ -105,7 +102,7 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }
         </div>
       </div>
 
-      <div className="overflow-x-scroll rounded-lg border">
+      <div className="overflow-x-auto rounded-lg border max-h-screen">
         <table className="w-full">
           <thead>
             <tr className="border-b bg-muted/50">
@@ -114,7 +111,7 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }
                 <th
                   key={day.index + i}
                   className={cn(
-                    "min-w-30 px-2 py-3 text-center text-sm font-semibold",
+                    "sticky top-0 min-w-30 px-2 py-3 text-center text-sm font-semibold z-50",
                     i === 0 && "bg-primary/10 text-primary",
                   )}
                 >
@@ -137,8 +134,7 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }
                   const isPast = colIndex === 0 && slotHour < currentHour
                   const isSelected = slot?.id === selectedSlotId
                   const status = getSlotStatus(slot, isPast)
-                  const isDisable = !isStaff && (!slot || (status !== "available" && status !== "in_queue"));
-
+                  // const isDisable = !isStaff && (!slot || (status !== "available" && status !== "in_queue"));
                   return (
                     <td key={day.index} className={cn("px-2 py-2", colIndex === 0 && "bg-primary/5")}>
                       <Button
@@ -146,14 +142,13 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }
                         size="sm"
                         className={cn(
                           "h-10 w-full text-xs",
-                          (status === "booked" || status === "past") && "opacity-60",
-                          isDisable && "cursor-not-allowed",
+                          (status === "booked" || status === "past") && "cursor-not-allowed opacity-60",
                           status === "unavailable" && "cursor-not-allowed opacity-40",
                           isSelected && "ring-2 ring-ring",
                           status === "in_queue" && "bg-primary/5 border-primary/30",
                         )}
-                        onClick={() => !isDisable && slot && onSlotClick(slot)}
-                        disabled={isDisable}
+                        onClick={() => isStaff ? slot && onSlotClick(slot) : slot && (status === "available" || status === "in_queue") && onSlotClick(slot)}
+                        disabled={isStaff ? false : !slot || (status !== "available" && status !== "in_queue")}
                       >
                         {slot ? (
                           <>

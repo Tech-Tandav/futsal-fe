@@ -77,7 +77,7 @@ export default function BookingPage() {
         if (userStr) {
           const user = JSON.parse(userStr)
           setFormData({
-            customerName: `${user.first_name} ${user.last_name}`,
+            customerName: `${user.username}`,
             customerPhone: "",
             customerEmail: user.email,
           })
@@ -104,7 +104,9 @@ export default function BookingPage() {
         customer_name: formData.customerName,
         customer_phone: formData.customerPhone,
         customer_email: formData.customerEmail,
-        date: new Date().toISOString().slice(0, 10)
+        date: new Date().toLocaleDateString("en-CA", {
+          timeZone: "Asia/Kathmandu",
+        })
       })
       // console.log("This is the ", response.id)
       setResponseId(response.id)
@@ -118,22 +120,20 @@ export default function BookingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
+      
         <div className="flex min-h-150 items-center justify-center">
           <div className="text-center space-y-3">
             <Spinner className="mx-auto h-8 w-8" />
             <p className="text-muted-foreground">Loading booking details...</p>
           </div>
         </div>
-      </div>
+      
     )
   }
 
   if (success) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
+      
         <main className="container mx-auto px-4 py-16">
           <Card className="mx-auto max-w-md text-center">
             <CardHeader>
@@ -170,13 +170,12 @@ export default function BookingPage() {
             </CardContent>
           </Card>
         </main>
-      </div>
+    
     )
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
+    
 
       <main className="container mx-auto px-4 py-8">
         <Button variant="ghost" onClick={() => router.back()} className="mb-6">
@@ -308,6 +307,6 @@ export default function BookingPage() {
           </div>
         </div>
       </main>
-    </div>
+    
   )
 }

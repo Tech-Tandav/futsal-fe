@@ -18,15 +18,12 @@ export const authServices = {
     },
     login : async(data:ILogin)=>{
         try{
-            console.log("THis is data on service", data)
+            
             const apiResponse = await authApiRepository.login(data)
-            console.log("THis is data on service after", apiResponse)
-            if (apiResponse?.status!=200){
-                return
-            }
             return apiResponse.data
         }catch(e){
             console.error("Failed to post blog service: ",e)
+            throw e
         }
     }
 }
