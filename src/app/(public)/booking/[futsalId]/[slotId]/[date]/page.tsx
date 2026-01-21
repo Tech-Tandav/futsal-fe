@@ -104,11 +104,8 @@ export default function BookingPage() {
         customer_name: formData.customerName,
         customer_phone: formData.customerPhone,
         customer_email: formData.customerEmail,
-        date: new Date().toLocaleDateString("en-CA", {
-          timeZone: "Asia/Kathmandu",
-        })
+        date:String(params.date)
       })
-      // console.log("This is the ", response.id)
       setResponseId(response.id)
       setSuccess(true)
     } catch (err) {

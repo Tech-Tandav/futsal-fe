@@ -42,6 +42,7 @@ export const bookingService = {
       return mapBooking(response.data);
     } catch (e) {
       console.error("Failed to update booking status: ", e);
+      throw e
     }
   },
 

@@ -7,7 +7,7 @@ import { ITimeSlot } from "@/domain/interfaces/timeSlotInterface"
 
 interface TimeSlotGridProps {
   timeSlots: ITimeSlot[]
-  onSlotClick: (slot: ITimeSlot) => void
+  onSlotClick: (slot: ITimeSlot, date:string) => void
   selectedSlotId?: number
   isStaff: boolean
 }
@@ -38,6 +38,7 @@ const TIME_SLOTS = [
 
 export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }: TimeSlotGridProps) {
   const today = new Date()
+  console.log("today date",today)
   const todayIndex = today.getDay()
   const currentHour = today.getHours()
   const orderedDays = Array.from({ length: 7 }, (_, i) => {
@@ -46,8 +47,8 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }
     return {
       index: date.getDay(),
       label: DAYS[date.getDay()],
-      dateStr: date.toLocaleDateString("en-CA", { month: "short", day: "numeric", timeZone: "Asia/Kathmandu" }),
-      fullDate: date.toLocaleDateString("en-CA", {timeZone:"Asia/Kathmandu"})
+      dateStr: date.toLocaleDateString("en-CA", { month: "short", day: "numeric"}),
+      currentDate: date.toLocaleDateString("en-CA")
     }
   })
 
@@ -134,8 +135,7 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }
                   const isPast = colIndex === 0 && slotHour < currentHour
                   const isSelected = slot?.id === selectedSlotId
                   const status = getSlotStatus(slot, isPast)
-                  // const isDisable = (!isStaff && !slot) ?  false : (!slot || status !== "available" && status !== "in_queue") ? true : false
-                  // console.log(isDisable)
+                  
                   return (
                     <td key={day.index} className={cn("px-2 py-2", colIndex === 0 && "bg-primary/5")}>
                       <Button
@@ -151,9 +151,9 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }
                         )}
                         onClick={() => {
                           if (isStaff && slot && status !== "unavailable") 
-                            return onSlotClick(slot)
+                            return onSlotClick(slot, day.currentDate)
                           else if (slot && (status === "available" || status === "in_queue"))
-                            return onSlotClick(slot)
+                            return onSlotClick(slot, day.currentDate)
                         }}
                         
                       >
