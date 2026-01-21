@@ -1,5 +1,5 @@
-import { ILocation } from "@/app/page";
 import { instance } from "@/utils/axiosInstance";
+import { ILocation } from "../interfaces/location";
 
 export const futsalApiRepository = {
   getFutsals: async (userLocation?:ILocation) => {
