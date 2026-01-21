@@ -2,7 +2,8 @@ import { futsalApiRepository } from "@/domain/apiRepository/futsalApiRepository"
 import { IFutsalApi, IFutsal, IFutsalImageApi, IFutsalImage } from "@/domain/interfaces/futsalInterface";
 import { mapFutsal } from "@/domain/mappers/futsalMapper";
 import { IResponseApi } from "../interfaces/apiResponse";
-import { ILocation } from "@/app/page";
+import { ILocation } from "../interfaces/location";
+// import { ILocation } from "@/app/page";
 
 
 export const futsalService = {
