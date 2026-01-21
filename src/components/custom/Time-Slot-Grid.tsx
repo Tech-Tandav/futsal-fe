@@ -102,7 +102,7 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-lg border max-h-screen">
+      <div className="overflow-x-auto rounded-lg border ">
         <table className="w-full">
           <thead>
             <tr className="border-b bg-muted/50">
@@ -111,7 +111,7 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }
                 <th
                   key={day.index + i}
                   className={cn(
-                    "sticky top-0 min-w-30 px-2 py-3 text-center text-sm font-semibold z-50",
+                    " min-w-30 px-2 py-3 text-center text-sm font-semibold z-50",
                     i === 0 && "bg-primary/10 text-primary",
                   )}
                 >
@@ -134,7 +134,8 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }
                   const isPast = colIndex === 0 && slotHour < currentHour
                   const isSelected = slot?.id === selectedSlotId
                   const status = getSlotStatus(slot, isPast)
-                  // const isDisable = !isStaff && (!slot || (status !== "available" && status !== "in_queue"));
+                  // const isDisable = (!isStaff && !slot) ?  false : (!slot || status !== "available" && status !== "in_queue") ? true : false
+                  // console.log(isDisable)
                   return (
                     <td key={day.index} className={cn("px-2 py-2", colIndex === 0 && "bg-primary/5")}>
                       <Button
@@ -142,13 +143,19 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }
                         size="sm"
                         className={cn(
                           "h-10 w-full text-xs",
-                          (status === "booked" || status === "past") && "cursor-not-allowed opacity-60",
+                          status === "past" && "cursor-not-allowed opacity-60",
+                          status === "booked" && !isStaff &&  "cursor-not-allowed opacity-60", 
                           status === "unavailable" && "cursor-not-allowed opacity-40",
                           isSelected && "ring-2 ring-ring",
                           status === "in_queue" && "bg-primary/5 border-primary/30",
                         )}
-                        onClick={() => isStaff ? slot && onSlotClick(slot) : slot && (status === "available" || status === "in_queue") && onSlotClick(slot)}
-                        disabled={isStaff ? false : !slot || (status !== "available" && status !== "in_queue")}
+                        onClick={() => {
+                          if (isStaff && slot && status !== "unavailable") 
+                            return onSlotClick(slot)
+                          else if (slot && (status === "available" || status === "in_queue"))
+                            return onSlotClick(slot)
+                        }}
+                        
                       >
                         {slot ? (
                           <>

@@ -19,16 +19,17 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
+
 
 const statusColorMap: Record<string, string> = {
   confirmed: "bg-green-500/10 text-green-600 border-green-500/20",
   pending: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20",
   cancelled: "bg-red-500/10 text-red-600 border-red-500/20",
 }
+
 
 export default function FutsalDetailPage() {
   const params = useParams()
@@ -80,26 +81,24 @@ export default function FutsalDetailPage() {
 
   if (loading) {
     return (
-      // <div className="min-h-screen bg-background">
-      //   <Header />
-        <div className="flex min-h-150 items-center justify-center">
-          <div className="text-center space-y-3">
-            <Spinner className="mx-auto h-8 w-8" />
-            <p className="text-muted-foreground">Loading futsal details...</p>
-          </div>
+      
+      <div className="flex min-h-150 items-center justify-center">
+        <div className="text-center space-y-3">
+          <Spinner className="mx-auto h-8 w-8" />
+          <p className="text-muted-foreground">Loading futsal details...</p>
         </div>
-      // </div>
+      </div>
+
     )
   }
 
   if (!futsal) {
     return (
-      // <div className="min-h-screen bg-background">
-      //   <Header />
-        <div className="container mx-auto px-4 py-8">
-          <p className="text-center text-muted-foreground">Futsal not found</p>
-        </div>
-      // </div>
+      
+      <div className="container mx-auto px-4 py-8">
+        <p className="text-center text-muted-foreground">Futsal not found</p>
+      </div>
+
     )
   }
 
@@ -107,9 +106,7 @@ export default function FutsalDetailPage() {
   
 
   return (
-    // <div className="min-h-screen bg-background">
-    //   <Header />
-
+    
       <main className="container mx-auto px-4 py-8">
         <Button variant="ghost" onClick={() => router.back()} className="mb-6">
           <ArrowLeft className="mr-2 h-4 w-4" />
@@ -213,26 +210,12 @@ export default function FutsalDetailPage() {
 
                               <tbody>
                                 {selectedSlot.booking.map((book, index) => (
-                                  <tr
-                                    key={book.id}
-                                    className="border-b last:border-0 hover:bg-background/60 transition"
-                                  >
+                                  <tr key={book.id} className="border-b last:border-0 hover:bg-background/60 transition">
                                     {/* Row number */}
-                                    <td className="px-2 py-2 text-muted-foreground">
-                                      {index + 1}
-                                    </td>
-
-                                    <td className="px-3 py-2 font-medium">
-                                      {book.customerName}
-                                    </td>
-
-                                    <td className="px-3 py-2 text-muted-foreground">
-                                      {book.customerPhone}
-                                    </td>
-
-                                    <td className="px-3 py-2 text-muted-foreground whitespace-nowrap">
-                                      {book.created_at}
-                                    </td>
+                                    <td className="px-2 py-2 text-muted-foreground">{index + 1}</td>
+                                    <td className="px-3 py-2 font-medium">{book.customerName}</td>
+                                    <td className="px-3 py-2 text-muted-foreground"> {book.customerPhone}</td>
+                                    <td className="px-3 py-2 text-muted-foreground whitespace-nowrap">{book.created_at}</td>
 
                                     {/* Status */}
                                     <td className="px-3 py-2">
