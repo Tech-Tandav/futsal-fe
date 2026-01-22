@@ -41,32 +41,32 @@ export default function FutsalDetailPage() {
   const [loading, setLoading] = useState(true)
   const [isStaff, setStaff] = useState(false)
 
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        setLoading(true)
-        const futsalId = String(params.id)
-        const [futsalData, slotsData] = await Promise.all([
-          futsalService.retrieveFutsal(futsalId),
-          timeSlotService.filterTimeSlotByFutsalID(futsalId)
-        ])
+  const loadData = async () => {
+    try {
+      setLoading(true)
+      const futsalId = String(params.id)
+      const [futsalData, slotsData] = await Promise.all([
+        futsalService.retrieveFutsal(futsalId),
+        timeSlotService.filterTimeSlotByFutsalID(futsalId)
+      ])
 
-        setFutsal(futsalData)
-        setTimeSlots(slotsData)
-        const user = localStorage.getItem("user")
-        if (user){
-          const isStaff = JSON.parse(user).is_staff
-          console.log("user is ",isStaff)
-          setStaff(isStaff)
-        }
-
-      } catch (error) {
-        console.error("Failed to load futsal details:", error)
-      } finally {
-        setLoading(false)
+      setFutsal(futsalData)
+      setTimeSlots(slotsData)
+      const user = localStorage.getItem("user")
+      if (user){
+        const isStaff = JSON.parse(user).is_staff
+        console.log("user is ",isStaff)
+        setStaff(isStaff)
       }
-    }
 
+    } catch (error) {
+      console.error("Failed to load futsal details:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
     loadData()
   }, [params.id])
 
@@ -84,6 +84,7 @@ export default function FutsalDetailPage() {
     try {
         setLoading(true)
         const response = await bookingService.updateBookingStatus(book_id, value)
+        loadData()
         setSelectedSlot(null)
     }catch (error) {
         console.error("Failed to load futsal details:", error)
@@ -120,7 +121,7 @@ export default function FutsalDetailPage() {
 
   return (
     
-      <main className="container mx-auto px-4 py-8">
+      <>
         <Button variant="ghost" onClick={() => router.back()} className="mb-6">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Listings
@@ -291,7 +292,7 @@ export default function FutsalDetailPage() {
             </Card>
           </div>
         </div>
-      </main>
+      </>
    
   )
 }

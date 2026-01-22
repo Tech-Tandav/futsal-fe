@@ -38,7 +38,6 @@ const TIME_SLOTS = [
 
 export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }: TimeSlotGridProps) {
   const today = new Date()
-  console.log("today date",today)
   const todayIndex = today.getDay()
   const currentHour = today.getHours()
   const orderedDays = Array.from({ length: 7 }, (_, i) => {

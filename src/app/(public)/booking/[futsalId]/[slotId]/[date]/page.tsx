@@ -160,7 +160,7 @@ export default function BookingPage() {
                 className="w-full">
                   View My Bookings
                 </Button>
-                <Button onClick={() => router.push("/")} variant="outline" className="w-full">
+                <Button onClick={() => router.back()} variant="outline" className="w-full">
                   Browse More Courts
                 </Button>
               </div>
