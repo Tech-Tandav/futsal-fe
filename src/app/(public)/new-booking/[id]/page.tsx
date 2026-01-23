@@ -32,7 +32,7 @@ const page = () => {
   return (
     
 
-      <main className="container mx-auto px-4 py-8">
+      <>
         <h1 className="mb-6 text-3xl font-bold">My Booking</h1>
 
           {booking === null ? (
@@ -83,7 +83,7 @@ const page = () => {
           )}
           
         
-      </main>
+      </>
     
   )
 }

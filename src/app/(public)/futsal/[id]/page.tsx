@@ -61,8 +61,7 @@ export default function FutsalDetailPage() {
   }, [params.id])
 
   const handleSlotClick = (timeSlot:ITimeSlot, date:string) => {
-    console.log("hellloooo")
-    isStaff ? router.push(`/owner?futsal_id=${String(params.id)}&timeSlot_id=${timeSlot.id}`) : setSelectedSlot({timeSlot, date})
+    isStaff ? router.push(`/owner?futsal_id=${String(params.id)}&timeSlot_id=${timeSlot.id}&date=${date}`) : setSelectedSlot({timeSlot, date})
   }
 
   const handleBooking = () => {

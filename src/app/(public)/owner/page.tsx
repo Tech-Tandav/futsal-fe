@@ -1,5 +1,6 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Spinner } from "@/components/ui/spinner"
 import { IFutsal } from "@/domain/interfaces/futsalInterface"
@@ -8,8 +9,9 @@ import { bookingService } from "@/domain/services/bookingService"
 import { futsalService } from "@/domain/services/futsalService"
 import { timeSlotService } from "@/domain/services/timeSlotService"
 import { cn } from "@/lib/utils"
+import { ArrowLeft } from "lucide-react"
 import { useSearchParams } from "next/navigation"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 
@@ -22,18 +24,17 @@ const statusColorMap: Record<string, string> = {
 
 
 export default function OwnerDashboardPage() {
-  const [loading, setLoading] = useState(true)
-  // const router = useRouter()
-  const [timeSlots, setTimeSlots] = useState<ITimeSlot | null>(null)
+  const router = useRouter();
   const searchParams = useSearchParams();
+
+  const [loading, setLoading] = useState(true)
+  const [timeSlot, setTimeSlots] = useState<ITimeSlot | null>(null)
+  
   const loadData = async () => {
       try {
         setLoading(true)
-        const futsalId = searchParams.get("futsal_id");
         const timeSlotId = searchParams.get("timeSlot_id");
-        console.log(timeSlotId)
         const slotsData =  timeSlotId ? await timeSlotService.retrieveTimeSlot(timeSlotId) : null
-        console.log(slotsData)
         setTimeSlots(slotsData)
       } catch (error) {
         console.error("Failed to load futsal details:", error)
@@ -45,13 +46,20 @@ export default function OwnerDashboardPage() {
   useEffect(() => {
     loadData()
   }, [])
+
+  const handleBooking = (timeSlots:ITimeSlot) => {
+    const futsalId = searchParams.get("futsal_id");
+    const date = searchParams.get("date");
+    if (timeSlots) {
+      router.push(`/booking/${futsalId}/${timeSlots.id}/?date=${date}`)
+    }
+  }
     
   const handleStatusChange = async(book_id:string, value:string)=>{
     try {
         setLoading(true)
         const response = await bookingService.updateBookingStatus(book_id, value)
         loadData()
-    
     }catch (error) {
         console.error("Failed to load futsal details:", error)
       } finally {
@@ -62,20 +70,24 @@ export default function OwnerDashboardPage() {
     if (loading) {
       return (
         
-          <div className="flex min-h-150 items-center justify-center">
-            <div className="text-center space-y-3">
-              <Spinner className="mx-auto h-8 w-8" />
-              <p className="text-muted-foreground">Loading dashboard...</p>
-            </div>
+        <div className="flex min-h-150 items-center justify-center">
+          <div className="text-center space-y-3">
+            <Spinner className="mx-auto h-8 w-8" />
+            <p className="text-muted-foreground">Loading dashboard...</p>
           </div>
+        </div>
         
       )
     }
 
     return (
-      
+      <>
+        <Button variant="ghost" onClick={() => router.back()} className="mb-6">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Listings
+        </Button>
 
-        <div className="mt-4 rounded-xl border bg-muted/40 p-4 shadow-sm max-h-80 overflow-auto">
+        <div className="mt-4 rounded-xl border bg-muted/40 p-4 shadow-sm  overflow-auto ">
           <h4 className="mb-3 text-sm font-semibold text-muted-foreground">
             Booking Details
           </h4>
@@ -93,13 +105,13 @@ export default function OwnerDashboardPage() {
               </thead>
 
               <tbody>
-                {timeSlots && timeSlots.booking.map((book, index) => {
+                {timeSlot && timeSlot.booking.map((book, index) => {
                   return (
                   <tr key={book.id} className="border-b last:border-0 hover:bg-background/60 transition">
                     {/* Row number */}
                     <td className="px-2 py-2 text-muted-foreground">{index + 1}</td>
                     <td className="px-3 py-2 font-medium">{book.customerName}</td>
-                    <td className="px-3 py-2 text-muted-foreground"> {book.customerPhone}</td>
+                    <td className="min-w-40 px-3 py-2 text-muted-foreground"> {book.customerPhone}</td>
                     <td className="px-3 py-2 text-muted-foreground whitespace-nowrap">{new Date(book.created_at).toLocaleString("en-CA")}</td>
 
                     {/* Status */}
@@ -130,6 +142,34 @@ export default function OwnerDashboardPage() {
               </tbody>
             </table>
           </div>
-        </div>
+          {timeSlot && (
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-lg border bg-muted/50 p-4">
+              <div>
+                <p className="font-medium text-sm sm:text-base">
+                  Selected Time Slot
+                </p>
+                <p className="text-xs sm:text-sm text-muted-foreground">
+                  {
+                    ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][
+                      timeSlot.dayOfWeek
+                    ]
+                  }{" "}
+                  at {timeSlot.startTime} - {timeSlot.endTime}
+                </p>
+              </div>
+
+              <Button
+                onClick={()=>handleBooking(timeSlot)}
+                size="lg"
+                className="w-full sm:w-auto"
+              >
+                Continue to Booking
+              </Button>
+            </div>
+           
+          )}
+          </div>
+      </>
+          
     )
 }

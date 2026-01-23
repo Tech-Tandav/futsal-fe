@@ -41,23 +41,18 @@ export default function MyBookingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
         <div className="flex min-h-150 items-center justify-center">
           <div className="text-center space-y-3">
             <Spinner className="mx-auto h-8 w-8" />
             <p className="text-muted-foreground">Loading your bookings...</p>
           </div>
         </div>
-      </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-
-      <main className="container mx-auto px-4 py-8">
+    
+      <>
         <h1 className="mb-6 text-3xl font-bold">My Bookings</h1>
 
         {bookings.length === 0 ? (
@@ -107,8 +102,8 @@ export default function MyBookingsPage() {
             ))}
           </div>
         )}
-      </main>
-    </div>
+      </>
+  
   )
 }
 
