@@ -1,16 +1,19 @@
 "use client"
 import { Header } from '@/components/custom/Header'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Spinner } from '@/components/ui/spinner'
 import { IBooking } from '@/domain/interfaces/bookingInterface'
 import { bookingService } from '@/domain/services/bookingService'
-import {  Calendar, Clock, User } from 'lucide-react'
+import {  ArrowLeft, Calendar, Clock, User } from 'lucide-react'
 import { useParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
 const page = () => {
     const params = useParams()
+    const router = useRouter()
     const bookingId = String(params.id)
     const [booking, setBooking] = useState<IBooking | null>(null)
     const [loading, setLoading] = useState(true)
@@ -33,6 +36,10 @@ const page = () => {
     
 
       <>
+        <Button variant="ghost" onClick={() => router.push("/")} className="mb-6">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Listings
+          </Button>
         <h1 className="mb-6 text-3xl font-bold">My Booking</h1>
 
           {booking === null ? (

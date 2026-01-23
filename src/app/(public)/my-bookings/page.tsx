@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { Calendar, Clock, User } from "lucide-react"
+import { ArrowLeft, Calendar, Clock, User } from "lucide-react"
 import { IBooking } from "@/domain/interfaces/bookingInterface"
 import { bookingService } from "@/domain/services/bookingService"
 import { Header } from "@/components/custom/Header"
 import { Spinner } from "@/components/ui/spinner"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 // import { IBooking } from "@/src/interface/bookingInterface"
 // import Header from "@/src/components/common/header/header"
 // import { Spinner } from "@/src/components/ui/spinner"
@@ -53,6 +54,10 @@ export default function MyBookingsPage() {
   return (
     
       <>
+        <Button variant="ghost" onClick={() => router.push("/")} className="mb-6">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Listings
+        </Button>
         <h1 className="mb-6 text-3xl font-bold">My Bookings</h1>
 
         {bookings.length === 0 ? (

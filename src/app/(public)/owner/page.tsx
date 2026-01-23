@@ -84,7 +84,7 @@ export default function OwnerDashboardPage() {
       <>
         <Button variant="ghost" onClick={() => router.back()} className="mb-6">
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Listings
+          Back to Time Slot List
         </Button>
 
         <div className="mt-4 rounded-xl border bg-muted/40 p-4 shadow-sm  overflow-auto ">

@@ -132,7 +132,7 @@ export default function BookingPage() {
   if (success) {
     return (
       
-        <main className="container mx-auto px-4 py-16">
+        <>
           <Card className="mx-auto max-w-md text-center">
             <CardHeader>
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
@@ -167,7 +167,7 @@ export default function BookingPage() {
               </div>
             </CardContent>
           </Card>
-        </main>
+        </>
     
     )
   }
@@ -175,7 +175,7 @@ export default function BookingPage() {
   return (
     
 
-      <main className="container mx-auto px-4 py-8">
+      <>
         <Button variant="ghost" onClick={() => router.back()} className="mb-6">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back
@@ -304,7 +304,7 @@ export default function BookingPage() {
             </Card>
           </div>
         </div>
-      </main>
+      </>
     
   )
 }
