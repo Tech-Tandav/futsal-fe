@@ -149,20 +149,17 @@ export default function BookingPage() {
                 </AlertDescription>
               </Alert>
               <div className="flex flex-col gap-2">
-                
-                <Button onClick={() => {
-                  if (token){
+                { token && (
+                  <Button onClick={() => {
                     router.push("/my-bookings")
-                  }else{
-                    router.push(`/new-booking/${responseId}`)
-                  }
                   }
                 }  
                 className="w-full">
                   View My Bookings
                 </Button>
+                )}
                 <Button onClick={() => router.back()} variant="outline" className="w-full">
-                  Browse More Courts
+                  Back
                 </Button>
               </div>
             </CardContent>

@@ -75,9 +75,9 @@ export default function Home() {
             Discover futsal venues near you and book your slot instantly.
           </p>
 
-          {showLocationPrompt && !userLocation && (
+          {/* {showLocationPrompt && !userLocation && (
             <LocationPrompt onLocationGranted={handleLocationGranted} onDismiss={() => setShowLocationPrompt(false)} />
-          )}
+          )} */}
 
           <div className="flex gap-2">
             <div className="relative flex-1">

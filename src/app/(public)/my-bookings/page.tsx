@@ -5,17 +5,8 @@ import { useRouter } from "next/navigation"
 import { ArrowLeft, Calendar, Clock, User } from "lucide-react"
 import { IBooking } from "@/domain/interfaces/bookingInterface"
 import { bookingService } from "@/domain/services/bookingService"
-import { Header } from "@/components/custom/Header"
 import { Spinner } from "@/components/ui/spinner"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-// import { IBooking } from "@/src/interface/bookingInterface"
-// import Header from "@/src/components/common/header/header"
-// import { Spinner } from "@/src/components/ui/spinner"
-// import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/ui/card"
-// import { bookingServices } from "@/src/services/bookingService"
-// import { Badge } from "@/src/components/ui/badge"
 
 
 export default function MyBookingsPage() {
@@ -58,69 +49,38 @@ export default function MyBookingsPage() {
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Listings
         </Button>
-        <h1 className="mb-6 text-3xl font-bold">My Bookings</h1>
-
-        {bookings.length === 0 ? (
-          <Card>
-            <CardContent className="flex min-h-75 items-center justify-center">
-              <div className="text-center space-y-2">
-                <p className="text-lg font-medium">No bookings yet</p>
-                <p className="text-muted-foreground">Start booking futsal courts to see them here</p>
-              </div>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {bookings.map((booking) => (
-              <Card key={booking.id}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <CardTitle className="text-lg">{booking.futsalName || "Futsal Court"}</CardTitle>
-                    {getStatusBadge(booking.status)}
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-center gap-2 text-sm">
-                    <User className="h-4 w-4 text-muted-foreground" />
-                    <span>{booking.customerName}</span>
-                  </div>
-
-                  {booking.date && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <span>{booking.date}</span>
-                    </div>
-                  )}
-
-                  {booking.startTime && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <Clock className="h-4 w-4 text-muted-foreground" />
-                      <span>{booking.startTime}</span>
-                    </div>
-                  )}
-
-                  <div className="text-xs text-muted-foreground">
-                    Booked on {new Date(booking.createdAt).toLocaleDateString()}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+        <div className="mt-4 rounded-xl border bg-muted/40 p-4 shadow-sm  overflow-auto ">
+          <h1 className="mb-6 text-3xl font-bold">My Booking</h1>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse text-xs">
+              <thead>
+                <tr className="border-b text-muted-foreground">
+                  <th className="px-2 py-2 text-left font-medium">ID</th>
+                  <th className="px-3 py-2 text-left font-medium">Customer Name</th>
+                  <th className="px-3 py-2 text-left font-medium">Futsal Name</th>
+                  <th className="px-3 py-2 text-left font-medium">Date</th>
+                  <th className="px-3 py-2 text-left font-medium">Start Time</th>
+                  <th className="px-3 py-2 text-left font-medium">Created At</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bookings.map((booking, index) => {
+                  const date = new Date(booking.createdAt).toLocaleString("en-CN")
+                  return (
+                  <tr key={booking.id} className="border-b last:border-0 hover:bg-background/60 transition">
+                    <td className="px-2 py-2 text-muted-foreground">{index + 1}</td>
+                    <td className="px-3 py-2 font-medium">{booking.customerName}</td>
+                    <td className="px-3 py-2 font-medium"> {booking.futsalName}</td>
+                    <td className="px-3 py-2 font-medium">{booking.date}</td>
+                    <td className="px-3 py-2 font-medium"> {booking.startTime}</td>
+                    <td className="px-3 py-2 font-medium"> {date}</td>
+                  </tr>
+                )})}
+              </tbody>
+            </table>
           </div>
-        )}
+        </div>
       </>
   
   )
-}
-
-function getStatusBadge(status: string) {
-  switch (status) {
-    case "confirmed":
-      return <Badge className="bg-primary">Confirmed</Badge>
-    case "pending":
-      return <Badge variant="secondary">Pending</Badge>
-    case "rejected":
-      return <Badge variant="destructive">Rejected</Badge>
-    default:
-      return <Badge variant="outline">{status}</Badge>
-  }
 }

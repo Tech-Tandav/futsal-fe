@@ -47,7 +47,7 @@ export function FutsalCard({ futsal }: FutsalCardProps) {
           </div>
           <div className="flex items-center gap-1 rounded-lg bg-secondary px-2 py-1">
             <Star className="h-4 w-4 fill-primary text-primary" />
-            <span className="text-sm font-semibold">4.8</span>
+            <span className="text-sm font-semibold"></span>
           </div>
         </div>
       </CardHeader>

@@ -7,7 +7,7 @@ export const bookingService = {
   getBookings: async (): Promise<IBooking[]> => {
     try {
       const response = await bookingApiRepository.getBookings();
-      if (response?.status !== 200) return [];
+      // if (response?.status !== 200) return [];
       const rawData: IBookingApi[] = response.data.results;
       return rawData.map(mapBooking);
     } catch (e) {

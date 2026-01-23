@@ -49,9 +49,9 @@ export function Header() {
             <></>
           : isAuthenticated ? (
             <>
-              <Link href="/">
+              <Link href="/my-bookings">
                 <Button variant="ghost" className="text-sm font-medium">
-                  Discover
+                  My Booking
                 </Button>
               </Link>
               <DropdownMenu>
@@ -62,7 +62,7 @@ export function Header() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" >
                   <DropdownMenuLabel>{user.username.toUpperCase()}</DropdownMenuLabel>
-                  <DropdownMenuLabel>{user.is_staff ? "Staff" : ""}</DropdownMenuLabel>
+                  <DropdownMenuLabel>{user.is_staff ? "Owner" : "Customer"}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
