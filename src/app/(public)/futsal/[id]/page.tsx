@@ -20,16 +20,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { cn } from "@/lib/utils"
-import { bookingService } from "@/domain/services/bookingService"
-
-
-const statusColorMap: Record<string, string> = {
-  confirmed: "bg-green-500/50 text-green-600 border-green-500/20",
-  pending: "bg-yellow-500/50 text-yellow-600 border-yellow-500/20",
-  rejected: "bg-red-500/50 text-red-600 border-red-500/20",
-}
 
 
 export default function FutsalDetailPage() {
@@ -71,27 +61,17 @@ export default function FutsalDetailPage() {
   }, [params.id])
 
   const handleSlotClick = (timeSlot:ITimeSlot, date:string) => {
-    setSelectedSlot({timeSlot, date})
+    console.log("hellloooo")
+    isStaff ? router.push(`/owner?futsal_id=${String(params.id)}&timeSlot_id=${timeSlot.id}`) : setSelectedSlot({timeSlot, date})
   }
 
   const handleBooking = () => {
     if (selectedSlot) {
-      router.push(`/booking/${futsal?.id}/${selectedSlot.timeSlot.id}/${selectedSlot.date}`)
+      router.push(`/booking/${futsal?.id}/${selectedSlot.timeSlot.id}/?date=${selectedSlot.date}`)
     }
   }
 
-  const handleStatusChange = async(book_id:string, value:string)=>{
-    try {
-        setLoading(true)
-        const response = await bookingService.updateBookingStatus(book_id, value)
-        loadData()
-        setSelectedSlot(null)
-    }catch (error) {
-        console.error("Failed to load futsal details:", error)
-      } finally {
-        setLoading(false)
-      }
-  }
+  
 
   if (loading) {
     return (
@@ -204,64 +184,7 @@ export default function FutsalDetailPage() {
                         </DialogTitle>
                         <DialogDescription />
                       </DialogHeader>
-                      {isStaff && selectedSlot.timeSlot.booking.length > 0 && (
-                        <div className="mt-4 rounded-xl border bg-muted/40 p-4 shadow-sm max-h-80 overflow-auto">
-                          <h4 className="mb-3 text-sm font-semibold text-muted-foreground">
-                            Booking Details
-                          </h4>
-
-                          <div className="overflow-x-auto">
-                            <table className="w-full border-collapse text-xs">
-                              <thead>
-                                <tr className="border-b text-muted-foreground">
-                                  <th className="px-2 py-2 text-left font-medium">#</th>
-                                  <th className="px-3 py-2 text-left font-medium">Customer</th>
-                                  <th className="px-3 py-2 text-left font-medium">Phone</th>
-                                  <th className="px-3 py-2 text-left font-medium">Booked At</th>
-                                  <th className="px-3 py-2 text-left font-medium">Status</th>
-                                </tr>
-                              </thead>
-
-                              <tbody>
-                                {selectedSlot.timeSlot.booking.map((book, index) => {
-                                  return (
-                                  <tr key={book.id} className="border-b last:border-0 hover:bg-background/60 transition">
-                                    {/* Row number */}
-                                    <td className="px-2 py-2 text-muted-foreground">{index + 1}</td>
-                                    <td className="px-3 py-2 font-medium">{book.customerName}</td>
-                                    <td className="px-3 py-2 text-muted-foreground"> {book.customerPhone}</td>
-                                    <td className="px-3 py-2 text-muted-foreground whitespace-nowrap">{new Date(book.created_at).toLocaleString("en-CA")}</td>
-
-                                    {/* Status */}
-                                    <td className="px-3 py-2">
-                                      <Select
-                                        defaultValue={book.status}
-                                        onValueChange={(value) => handleStatusChange(book.id, value)}
-                                      >
-                                        <SelectTrigger
-                                          className={cn(
-                                            "h-7 w-28 text-xs border",
-                                            statusColorMap[book.status]
-                                          )}
-                                        >
-                                          <SelectValue />
-                                        </SelectTrigger>
-
-                                        <SelectContent>
-                                          <SelectItem value="confirmed">Confirmed</SelectItem>
-                                          <SelectItem value="pending">Pending</SelectItem>
-                                          <SelectItem value="rejected">Rejected</SelectItem>
-                                        </SelectContent>
-                                      </Select>
-                                    </td>
-                                  </tr>
-                                )})}
-                                
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      )}                        
+                      
                       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-lg border bg-muted/50 p-4">
                         <div>
                           <p className="font-medium text-sm sm:text-base">
