@@ -76,7 +76,7 @@ export default function FutsalDetailPage() {
 
   const handleBooking = () => {
     if (selectedSlot) {
-      router.push(`/booking/${futsal?.id}/${selectedSlot.timeSlot.id}/${selectedSlot.date}`)
+      router.push(`/booking/${futsal?.id}/${selectedSlot.timeSlot.id}/?date=${selectedSlot.date}`)
     }
   }
 
@@ -235,7 +235,7 @@ export default function FutsalDetailPage() {
                                     {/* Status */}
                                     <td className="px-3 py-2">
                                       <Select
-                                        defaultValue={book.status}
+                                        value={book.status}
                                         onValueChange={(value) => handleStatusChange(book.id, value)}
                                       >
                                         <SelectTrigger

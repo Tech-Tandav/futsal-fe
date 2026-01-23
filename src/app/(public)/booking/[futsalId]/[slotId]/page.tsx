@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useEffect, useState } from "react"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { ArrowLeft, CheckCircle, Calendar, Clock, MapPin } from "lucide-react"
 import { IFutsal } from "@/domain/interfaces/futsalInterface"
 import { ITimeSlot } from "@/domain/interfaces/timeSlotInterface"
@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input"
 export default function BookingPage() {
   const params = useParams()
   const router = useRouter()
+  const searchparams = useSearchParams()
   const [futsal, setFutsal] = useState<IFutsal | null>(null)
   const [timeSlot, setTimeSlot] = useState<ITimeSlot | null>(null)
   const [loading, setLoading] = useState(true)
@@ -104,7 +105,7 @@ export default function BookingPage() {
         customer_name: formData.customerName,
         customer_phone: formData.customerPhone,
         customer_email: formData.customerEmail,
-        date:String(params.date)
+        date: searchparams.get('date')
       })
       setResponseId(response.id)
       setSuccess(true)
