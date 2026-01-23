@@ -15,13 +15,13 @@ export const timeSlotService = {
   //   }
   // },
 
-  retrieveTimeSlot: async (id: string): Promise<ITimeSlot | undefined> => {
+  retrieveTimeSlot: async (id: string): Promise<ITimeSlot | null> => {
     try {
       const response = await timeSlotApiRepository.retrieveTimeSlot(id);
-      if (response?.status !== 200) return;
       return mapTimeSlot(response.data);
     } catch (e) {
       console.error("Failed to retrieve time slot: ", e);
+      throw null
     }
   },
 
