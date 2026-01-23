@@ -89,7 +89,7 @@ export default function MyBookingsPage() {
                     <td className="px-3 py-2 font-medium">{booking.date}</td>
                     <td className="px-3 py-2 font-medium"> {booking.startTime}</td>
                     <td className="px-3 py-2 font-medium"> {getStatusBadge(booking.status)}</td>
-                    <td className="px-3 py-2 font-medium"> {new Date(date).toLocaleString()}</td>
+                    <td className="px-3 py-2 font-medium"> {new Date(date).toLocaleString("en-CA")}</td>
                   </tr>
                 )})}
               </tbody>
