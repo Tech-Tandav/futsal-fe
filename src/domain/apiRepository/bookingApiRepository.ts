@@ -1,9 +1,9 @@
 import { instance } from "@/utils/axiosInstance";
 
 export const bookingApiRepository = {
-  getBookings: async () => {
+  getBookings: async (page:number) => {
     try {
-      return await instance.get("futsal/booking/");
+      return await instance.get(`futsal/booking/?page=${page}`);
     } catch (e) {
       console.error("Failed to get bookings: ", e);
       throw e;
@@ -21,7 +21,7 @@ export const bookingApiRepository = {
 
   createBooking: async (data: any) => {
     try {
-      return await instance.post("futsal/booking/", data);
+      return await instance.post("futsal/booking/create/", data);
     } catch (e) {
       console.error("Failed to create booking: ", e);
       throw e;

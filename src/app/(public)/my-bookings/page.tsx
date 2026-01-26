@@ -8,6 +8,7 @@ import { bookingService } from "@/domain/services/bookingService"
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import MyPagination from "@/components/custom/MyPagination"
 
 
 function getStatusBadge(status: string) {
@@ -27,14 +28,19 @@ export default function MyBookingsPage() {
   const router = useRouter()
   const [bookings, setBookings] = useState<IBooking[]>([])
   const [loading, setLoading] = useState(true)
-
+  const [page, setPage] = useState<number>(1)
+  const [totalPages, settotalPages] = useState<number>(1)
+   const [pageSize, setpageSize] = useState<number>(1)
   useEffect(() => {
 
-    const loadBookings = async () => {
+    const loadBookings = async (page:number) => {
       try {
         setLoading(true)
-        const data = await bookingService.getBookings()
-        setBookings(data)
+        const data = await bookingService.getBookings(page)
+        setBookings(data.results)
+        setPage(data.current_page)
+        settotalPages(data.total_pages)
+        setpageSize(data.page_size)
       } catch (error) {
         console.error("Failed to load bookings:", error)
       } finally {
@@ -42,8 +48,8 @@ export default function MyBookingsPage() {
       }
     }
 
-    loadBookings()
-  }, [router])
+    loadBookings(page)
+  }, [router, page])
 
   if (loading) {
     return (
@@ -83,7 +89,7 @@ export default function MyBookingsPage() {
                   const date = new Date(booking.createdAt).toLocaleString("en-CN")
                   return (
                   <tr key={booking.id} className="border-b last:border-0 hover:bg-background/60 transition">
-                    <td className="px-2 py-2 text-muted-foreground">{index + 1}</td>
+                    <td className="px-2 py-2 text-muted-foreground">{(page - 1) * pageSize + index + 1}</td>
                     <td className="px-3 py-2 font-medium">{booking.customerName}</td>
                     <td className="px-3 py-2 font-medium"> {booking.futsalName}</td>
                     <td className="px-3 py-2 font-medium">{booking.date}</td>
@@ -94,6 +100,13 @@ export default function MyBookingsPage() {
                 )})}
               </tbody>
             </table>
+            <div className="mt-4 flex justify-start">
+              <MyPagination
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+              />
+            </div>
           </div>
         </div>
       </>

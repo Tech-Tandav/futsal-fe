@@ -20,7 +20,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import dynamic from "next/dynamic";
 
+const MyMap = dynamic(() => import("@/components/custom/MyMap"), { ssr: false });
 
 export default function FutsalDetailPage() {
   const params = useParams()
@@ -107,7 +109,7 @@ export default function FutsalDetailPage() {
         </Button>
 
         <div className="grid gap-8 grid-cols-1 lg:grid-cols-3">
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 space-y-8">
             <Card>
               <div className="relative h-64 w-full overflow-hidden rounded-t-lg bg-muted">
                 {futsal?.images ? (
@@ -155,6 +157,7 @@ export default function FutsalDetailPage() {
                 )}
               </CardContent>
             </Card>
+            <MyMap lat={futsal.latitude} lng={futsal.longitude}/>
           </div>
 
           <div className="lg:col-span-2">

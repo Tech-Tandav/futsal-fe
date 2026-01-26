@@ -10,25 +10,17 @@ import { Search, MapPin, Zap } from "lucide-react"
 import { Spinner } from "@/components/ui/spinner"
 import { IFutsal } from "@/domain/interfaces/futsalInterface"
 import { futsalService } from "@/domain/services/futsalService"
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
+
 import { ILocation } from "@/domain/interfaces/location"
+import MyPagination from "../custom/MyPagination"
 
 
 
 export default function Home() {
   const [futsals, setFutsals] = useState<IFutsal[]>([])
   const [loading, setLoading] = useState(true)
-  const [next, setNext] = useState<string | null>(null)
-  const [previous, setPrevious] = useState<string | null>(null)
-
+  const [page, setPage] = useState<number>(1)
+  const [totalPages, settotalPages] = useState<number>(1)
   const [searchQuery, setSearchQuery] = useState("")
   const [userLocation, setUserLocation] = useState<ILocation | null>(null)
   const [showLocationPrompt, setShowLocationPrompt] = useState(true)
@@ -36,10 +28,12 @@ export default function Home() {
   const loadFutsals = async (userLocation?:ILocation) => {
     try {
       setLoading(true)
-      const data = await futsalService.getFutsals(userLocation)
+      const data = await futsalService.getFutsals(page,userLocation)
+      console.log(data)
       setFutsals(data.results)
-      setNext(data.next)
-      setPrevious(data.previous)
+      setPage(data.current_page)
+      settotalPages(data.total_pages)
+
     } catch (error) {
       console.error("Failed to load futsals:", error)
     } finally {
@@ -49,7 +43,7 @@ export default function Home() {
 
   useEffect(() => {
     loadFutsals()
-  }, [])
+  }, [page])
 
   const handleLocationGranted = (lat: number, lng: number) => {
     setUserLocation({ lat, lng })
@@ -117,28 +111,14 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            {/* <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious href={previous ?? undefined} />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">1</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#" isActive>2</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">3</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationNext href={next ?? undefined} />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination> */}
+            <div className="mt-4">
+                <MyPagination
+                  currentPage={page}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                />
+            </div>
+            
           </>
         )}
         

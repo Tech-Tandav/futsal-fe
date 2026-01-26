@@ -1,18 +1,22 @@
 import { bookingApiRepository } from "@/domain/apiRepository/bookingApiRepository";
 import { IBookingApi, IBooking } from "@/domain/interfaces/bookingInterface";
 import { mapBooking } from "../mappers/bookingMapper";
+import { IResponseApi } from "../interfaces/apiResponse";
 
 
 export const bookingService = {
-  getBookings: async (): Promise<IBooking[]> => {
+  getBookings: async (page:number): Promise<IResponseApi<IBooking[]>> => {
     try {
-      const response = await bookingApiRepository.getBookings();
-      // if (response?.status !== 200) return [];
-      const rawData: IBookingApi[] = response.data.results;
-      return rawData.map(mapBooking);
+      const response = await bookingApiRepository.getBookings(page);
+      const apiResponse = response.data;
+      const mapData = apiResponse.results.map(mapBooking);
+      return {
+        ...apiResponse,
+        results:mapData
+      }
     } catch (e) {
       console.error("Failed to get bookings: ", e);
-      return [];
+      throw e;
     }
   },
 

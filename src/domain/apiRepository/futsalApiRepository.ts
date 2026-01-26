@@ -2,10 +2,10 @@ import { instance } from "@/utils/axiosInstance";
 import { ILocation } from "../interfaces/location";
 
 export const futsalApiRepository = {
-  getFutsals: async (userLocation?:ILocation) => {
+  getFutsals: async (page:number, userLocation?:ILocation) => {
     try {
       console.log(userLocation)
-      return userLocation ? await instance.get(`futsal/futsals/?lat=${userLocation.lat}&log=${userLocation.lng}`) : await instance.get("futsal/futsals/");
+      return await instance.get(`futsal/futsals/?page=${page}&lat=${userLocation?.lat}&log=${userLocation?.lng}`)
     } catch (e) {
       console.error("Failed to get futsals: ", e);
       throw e;

@@ -14,7 +14,7 @@ interface FutsalCardProps {
 export function FutsalCard({ futsal }: FutsalCardProps) {
   const router = useRouter()
   return (
-    <Card className="group overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/50">
+    <Card className="group overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/50 ">
       <div className="relative h-56 w-full overflow-hidden bg-linear-to-br from-primary/10 to-accent/10">
         {futsal.imageUrl ? (
           <img
@@ -34,7 +34,7 @@ export function FutsalCard({ futsal }: FutsalCardProps) {
         )}
       </div>
 
-      <CardHeader className="pb-3">
+      <CardHeader className="pb-3 ">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1">
             <h3 className="text-lg font-bold text-foreground line-clamp-1">{futsal.name}</h3>
@@ -52,7 +52,7 @@ export function FutsalCard({ futsal }: FutsalCardProps) {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4 pb-4">
+      <CardContent className="space-y-4 pb-4 ">
         <div className="flex items-center gap-2 text-xl font-bold text-primary">
           {/* <DollarSign className="h-5 w-5" /> */}
           <span>Rs. {futsal.pricePerHour}</span>
@@ -75,7 +75,7 @@ export function FutsalCard({ futsal }: FutsalCardProps) {
         )}
       </CardContent>
 
-      <CardFooter>
+      <CardFooter className="mt-auto">
         <Button
           onClick={() => router.push(`/futsal/${futsal.id}`)}
           className="w-full bg-primary hover:bg-primary/70 font-semibold"
