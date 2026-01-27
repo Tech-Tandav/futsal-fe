@@ -157,7 +157,8 @@ export default function FutsalDetailPage() {
                 )}
               </CardContent>
             </Card>
-            <MyMap lat={futsal.latitude} lng={futsal.longitude}/>
+            <iframe src={futsal.mapSource}
+             width="100%" height="400" className="hidden sm:block" loading="lazy" ></iframe>
           </div>
 
           <div className="lg:col-span-2">
@@ -215,6 +216,8 @@ export default function FutsalDetailPage() {
                 )}
               </CardContent>
             </Card>
+            <iframe src={futsal.mapSource}
+             width="100%" height="400" className="block sm:hidden order-2 " loading="lazy" ></iframe>
           </div>
         </div>
       </>

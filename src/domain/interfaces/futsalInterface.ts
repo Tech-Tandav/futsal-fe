@@ -20,6 +20,7 @@ export interface IFutsalApi {
   images: IFutsalImageApi[];
   created_at: string;
   distance:number;
+  map_source:string;
 }
 
 // --------------------------
@@ -43,5 +44,6 @@ export interface IFutsal {
   imageUrl: string;
   images: IFutsalImage[];
   createdAt: string;
-  distance:number
+  distance:number;
+  mapSource:string;
 }
