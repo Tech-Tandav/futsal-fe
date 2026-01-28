@@ -1,22 +1,22 @@
+// import type { NextConfig } from "next";
+
+// const nextConfig: NextConfig = {
+//   /* config options here */
+//   allowedDevOrigins: ['http://192.168.1.185:3000'],
+// };
+
+// export default nextConfig;
+
+
 import type { NextConfig } from "next";
-
-
-const withPWA = require("@ducanh2912/next-pwa").default({
-  dest: "public",
-  cacheOnFrontEndNav:true,
-  aggressiveFrontEndNavCaching:true,
-  reloadOnOnline:true,
-  swcMinify:true,
-  disable:false,
-  workboxOptions:{
-    disableDevLogs:true
-  }
-});
+import withPWA from "@ducanh2912/next-pwa";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  allowedDevOrigins: ['http://192.168.1.185:3000'],
+  allowedDevOrigins: ["http://192.168.1.185:3000"],
+  // 👇 THIS FIXES THE ERROR
   turbopack: {},
 };
 
-module.exports =   withPWA(nextConfig);
+export default withPWA({
+  dest: "public",
+})(nextConfig);

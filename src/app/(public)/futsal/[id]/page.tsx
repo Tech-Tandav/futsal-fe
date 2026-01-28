@@ -20,9 +20,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import dynamic from "next/dynamic";
 
-const MyMap = dynamic(() => import("@/components/custom/MyMap"), { ssr: false });
 
 export default function FutsalDetailPage() {
   const params = useParams()

@@ -29,7 +29,6 @@ export default function Home() {
     try {
       setLoading(true)
       const data = await futsalService.getFutsals(page,userLocation)
-      console.log(data)
       setFutsals(data.results)
       setPage(data.current_page)
       settotalPages(data.total_pages)
