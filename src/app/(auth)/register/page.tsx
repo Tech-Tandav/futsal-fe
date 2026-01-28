@@ -1,7 +1,10 @@
 import Register from "@/components/project/Register";
+import { Suspense } from "react";
 
 export default function page() {
   return (
-   <Register/>
+    <Suspense fallback={null}>
+      <Register/>
+    </Suspense>
   )
 }

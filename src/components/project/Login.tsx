@@ -18,7 +18,7 @@ import { toast } from "sonner"
 export default function Login() {
   const router = useRouter()
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") || "/"; // default to home
+  const redirect = searchParams.get("redirect") || "/"
   const [loginData, setLoginData] = useState({username:"", password:""})
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
