@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useEffect, useState } from "react"
-import { useParams, useRouter, useSearchParams } from "next/navigation"
+import { redirect, useParams, useRouter, useSearchParams } from "next/navigation"
 import { ArrowLeft, CheckCircle, Calendar, Clock, MapPin } from "lucide-react"
 import { IFutsal } from "@/domain/interfaces/futsalInterface"
 import { ITimeSlot } from "@/domain/interfaces/timeSlotInterface"
@@ -34,17 +34,23 @@ export default function BookingPage() {
     customerPhone: "",
     customerEmail: "",
   })
-  const token = localStorage.getItem("access_token")
+
+  const futsalId = String(params.futsalId)
+  const slotId = String(params.slotId)
+  const token = localStorage.getItem("token")
+  console.log(window.location.pathname)
+  if (!token){
+    const currentPath = window.location.pathname; // current page
+    router.push(`/register?redirect=booking/${futsalId}/${slotId}?data=${searchParams.get("date")}`);
+  }
+  const userStr = localStorage.getItem("user")
+  
   const [responseId, setResponseId] = useState("")
   useEffect(() => {
-    
-    const userStr = localStorage.getItem("user")
-
     const loadData = async () => {
       try {
         setLoading(true)
-        const futsalId = String(params.futsalId)
-        const slotId = String(params.slotId)
+        
 
         const [futsalData, slotsData] = await Promise.all([
           futsalService.retrieveFutsal(futsalId),

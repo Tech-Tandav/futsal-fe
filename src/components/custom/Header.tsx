@@ -31,6 +31,7 @@ export function Header() {
 
   const handleLogout = () => {
     localStorage.removeItem("user")
+    localStorage.removeItem("token")
     setUser(null)
     router.push("/")
   }

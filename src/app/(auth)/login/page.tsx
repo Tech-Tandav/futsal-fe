@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,11 +12,14 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { authApiRepository } from "@/domain/apiRepository/authApiRepository"
 import { userService } from "@/domain/services/userService"
 import { authServices } from "@/domain/services/authService"
+import { toast } from "sonner"
 
 
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect") || "/"; // default to home
   const [loginData, setLoginData] = useState({username:"", password:""})
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
@@ -35,9 +38,15 @@ export default function LoginPage() {
     setLoading(true)
     try {
       const response = await authServices.login(loginData)
-      localStorage.setItem('user',JSON.stringify(response))
-      router.push("/")
-    } catch (err) {
+      console.log(response)
+      localStorage.setItem('token',response.token)
+      localStorage.setItem('user',JSON.stringify(response.user))
+      router.push(redirect)
+    } catch (err:any) {
+      for (const e of err.response.data.errors){
+        toast.error(e.detail, { position: "top-right" })
+      }
+      
       console.log(err)
       setError(err instanceof Error ? err.message : "Failed to login")
     } finally {
@@ -92,8 +101,11 @@ export default function LoginPage() {
 
             <p className="text-center text-sm text-muted-foreground">
               Don't have an account?{" "}
-              <Link href="/register" className="text-primary hover:underline">
+              <Link href={`/register?redirect=${redirect}`} className="text-primary hover:underline">
                 Register here
+              </Link><br/>
+              <Link href="/" className="text-primary">
+                Home
               </Link>
             </p>
           </form>

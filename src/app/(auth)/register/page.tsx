@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -17,6 +17,8 @@ import { authServices } from "@/domain/services/authService"
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect") || "/"; // default to home
   const [loginData, setLoginData] = useState({username:"", password:"", email:""})
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
@@ -36,7 +38,7 @@ export default function LoginPage() {
     try {
       const response = await authServices.register(loginData)
       localStorage.setItem('user',JSON.stringify(response))
-      router.push("/login")
+      router.push(`/login?redirect=${redirect}`)
     } catch (err) {
       console.log(err)
       setError(err instanceof Error ? err.message : "Failed to login")
@@ -49,8 +51,8 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-muted/30 px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">Login</CardTitle>
-          <CardDescription>Enter your credentials to access your account</CardDescription>
+          <CardTitle className="text-2xl font-bold">Register</CardTitle>
+          <CardDescription>Enter your credentials to create your account</CardDescription>
         </CardHeader>
         <CardContent>
           
@@ -104,8 +106,11 @@ export default function LoginPage() {
 
             <p className="text-center text-sm text-muted-foreground">
               Don't have an account?{" "}
-              <Link href="/register" className="text-primary hover:underline">
-                Register here
+              <Link href={`/login?redirect=${redirect}`} className="text-primary hover:underline">
+                Login here
+              </Link><br/>
+              <Link href="/" className="text-primary">
+                Home
               </Link>
             </p>
           </form>

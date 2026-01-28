@@ -20,6 +20,7 @@ export const authServices = {
         try{
             
             const apiResponse = await authApiRepository.login(data)
+            console.log(apiResponse)
             return apiResponse.data
         }catch(e){
             console.error("Failed to post blog service: ",e)

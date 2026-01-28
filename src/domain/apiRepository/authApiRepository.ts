@@ -8,15 +8,14 @@ export const authApiRepository = {
             return await authInstance.post("register/", data)
         }catch(e){
             console.error("Failed in register api repo: ", e)
+            throw e
         }
     },
     login : async(data:ILogin)=>{
         try{
             return await authInstance.post("login/", data)
         }catch(e){
-            console.error("Failed in login api repo: ", e)
             throw e
         }
     },
-
 }
