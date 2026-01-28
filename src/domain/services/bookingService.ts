@@ -37,6 +37,7 @@ export const bookingService = {
       return response.data;
     } catch (e) {
       console.error("Failed to create booking: ", e);
+      throw e
     }
   },
 

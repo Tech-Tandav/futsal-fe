@@ -16,6 +16,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
+import { toast } from "sonner"
 
 
 
@@ -47,7 +48,7 @@ export default function Booking() {
     if (!token){
       const currentPath = window.location.pathname; 
       console.log(currentPath)
-      router.push(`/register?redirect=booking/${futsalId}/${slotId}?data=${searchParams.get("date")}`);
+      router.push(`/register?redirect=booking/${futsalId}/${slotId}?date=${searchParams.get("date")}`);
     }
     setToken(token)
     const userStr = localStorage.getItem("user")
@@ -118,8 +119,12 @@ export default function Booking() {
       })
       setResponseId(response.id)
       setSuccess(true)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create booking")
+    } catch (err:any) {
+      for (const e of err.response.data.errors){
+        toast.error(e.detail, { position: "top-right" })
+      }
+      console.log(err)
+      // setError(err instanceof Error ? err.response : "Failed to create booking")
     } finally {
       setSubmitting(false)
     }
