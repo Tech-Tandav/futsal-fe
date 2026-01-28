@@ -9,6 +9,7 @@ import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import MyPagination from "@/components/custom/MyPagination"
+import { toast } from "sonner"
 
 
 function getStatusBadge(status: string) {
@@ -41,8 +42,10 @@ export default function MyBookingsPage() {
         setPage(data.current_page)
         settotalPages(data.total_pages)
         setpageSize(data.page_size)
-      } catch (error) {
-        console.error("Failed to load bookings:", error)
+      } catch (error:any) {
+        for (const e of error.response.data.errors){
+          toast.error(e.detail, { position: "top-right" })
+        }
       } finally {
         setLoading(false)
       }

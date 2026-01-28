@@ -45,8 +45,6 @@ export default function Login() {
       for (const e of err.response.data.errors){
         toast.error(e.detail, { position: "top-right" })
       }
-      
-      console.log(err)
       setError(err instanceof Error ? err.message : "Failed to login")
     } finally {
       setLoading(false)
