@@ -34,19 +34,23 @@ export default function BookingPage() {
     customerPhone: "",
     customerEmail: "",
   })
+  const [token, setToken] = useState< string|null>(null)
 
   const futsalId = String(params.futsalId)
   const slotId = String(params.slotId)
-  const token = localStorage.getItem("token")
-  console.log(window.location.pathname)
-  if (!token){
-    const currentPath = window.location.pathname; // current page
-    router.push(`/register?redirect=booking/${futsalId}/${slotId}?data=${searchParams.get("date")}`);
-  }
-  const userStr = localStorage.getItem("user")
+  
   
   const [responseId, setResponseId] = useState("")
   useEffect(() => {
+    const token = localStorage.getItem("token")
+    console.log(window.location.pathname)
+    if (!token){
+      const currentPath = window.location.pathname; 
+      console.log(currentPath)
+      router.push(`/register?redirect=booking/${futsalId}/${slotId}?data=${searchParams.get("date")}`);
+    }
+    setToken(token)
+    const userStr = localStorage.getItem("user")
     const loadData = async () => {
       try {
         setLoading(true)
