@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/dialog"
 
 
-export default function FutsalDetailPage() {
+export default function page() {
   const params = useParams()
   const router = useRouter()
   const [futsal, setFutsal] = useState<IFutsal | null>(null)
