@@ -52,9 +52,9 @@ export default function Home() {
 
   const filteredFutsals = futsals.filter(
     (futsal) =>
-      futsal.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      futsal.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      futsal.address.toLowerCase().includes(searchQuery.toLowerCase()),
+      futsal.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      futsal.city?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      futsal.address?.toLowerCase().includes(searchQuery.toLowerCase()),
   )
 
   return (

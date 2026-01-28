@@ -182,10 +182,10 @@ export default function Booking() {
     
 
       <>
-        <Button variant="ghost" onClick={() => router.back()} className="mb-6">
+        {/* <Button variant="ghost" onClick={() => router.back()} className="mb-6">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back
-        </Button>
+        </Button> */}
 
         <div className="mx-auto max-w-3xl">
           <h1 className="mb-6 text-3xl font-bold">Complete Your Booking</h1>
