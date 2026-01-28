@@ -106,8 +106,8 @@ export default function FutsalDetailPage() {
           Back to Listings
         </Button>
 
-        <div className="grid gap-8 grid-cols-1 lg:grid-cols-3">
-          <div className="lg:col-span-1 space-y-8">
+        <div className="grid  gap-8 grid-cols-1 lg:grid-cols-3">
+          <div className="lg:col-span-1 lg:block hidden">
             <Card>
               <div className="relative h-64 w-full overflow-hidden rounded-t-lg bg-muted">
                 {futsal?.images ? (
@@ -156,7 +156,7 @@ export default function FutsalDetailPage() {
               </CardContent>
             </Card>
             <iframe src={futsal.mapSource}
-             width="100%" height="400" className="hidden sm:block" loading="lazy" ></iframe>
+             width="100%" height="400" className="hidden sm:block mt-8" loading="lazy" ></iframe>
           </div>
 
           <div className="lg:col-span-2">
@@ -214,9 +214,12 @@ export default function FutsalDetailPage() {
                 )}
               </CardContent>
             </Card>
-            <iframe src={futsal.mapSource}
-             width="100%" height="400" className="block sm:hidden order-2 " loading="lazy" ></iframe>
           </div>
+          <div>
+            <iframe src={futsal.mapSource} width="100%" height="400" className="block sm:hidden order-2 " loading="lazy" >
+            </iframe>
+          </div>
+          
         </div>
       </>
    
