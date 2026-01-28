@@ -30,7 +30,7 @@ export default function MyBookingsPage() {
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState<number>(1)
   const [totalPages, settotalPages] = useState<number>(1)
-   const [pageSize, setpageSize] = useState<number>(1)
+  const [pageSize, setpageSize] = useState<number>(1)
   useEffect(() => {
 
     const loadBookings = async (page:number) => {

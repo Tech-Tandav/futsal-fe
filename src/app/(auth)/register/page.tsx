@@ -14,6 +14,8 @@ import { userService } from "@/domain/services/userService"
 import { authServices } from "@/domain/services/authService"
 
 
+export const dynamic = 'force-dynamic'
+
 
 export default function LoginPage() {
   const router = useRouter()
