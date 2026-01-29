@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
-// import 'leaflet/dist/leaflet.css'
+import { PostHogProvider } from "./providers";
+
 
 
 const _geist = Geist({ subsets: ["latin"] })
@@ -41,8 +42,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans antialiased`}>
-        {children}
-        <Toaster/>
+        <PostHogProvider>
+          {children}
+          <Toaster/>
+        </PostHogProvider>
       </body>
     </html>
   );
