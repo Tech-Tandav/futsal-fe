@@ -100,11 +100,11 @@ export default function Register() {
             </div>
 
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Logging in..." : "Login"}
+              {loading ? "Registering..." : "Register"}
             </Button>
 
             <p className="text-center text-sm text-muted-foreground">
-              Don't have an account?{" "}
+              Already have an account?{" "}
               <Link href={`/login?redirect=${redirect}`} className="text-primary hover:underline">
                 Login here
               </Link><br/>

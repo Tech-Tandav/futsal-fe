@@ -106,7 +106,7 @@ export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }
         <table className="w-full">
           <thead>
             <tr className="border-b bg-muted/50">
-              <th className="sticky left-0 z-10 bg-muted/50 px-4 py-3 text-left text-sm font-semibold">Time</th>
+              <th className="sticky left-0 z-10 bg-muted/50 px-4 py-3 text-left text-sm font-semibold backdrop-blur-3xl">Time</th>
               {orderedDays.map((day, i) => (
                 <th
                   key={day.index + i}

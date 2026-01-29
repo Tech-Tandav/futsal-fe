@@ -93,7 +93,7 @@ export default function Login() {
             </div>
 
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Logging in..." : "Login"}
+              {loading ? "Logging..." : "Login"}
             </Button>
 
             <p className="text-center text-sm text-muted-foreground">
