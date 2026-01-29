@@ -10,7 +10,6 @@ import { Search, MapPin, Zap } from "lucide-react"
 import { Spinner } from "@/components/ui/spinner"
 import { IFutsal } from "@/domain/interfaces/futsalInterface"
 import { futsalService } from "@/domain/services/futsalService"
-
 import { ILocation } from "@/domain/interfaces/location"
 import MyPagination from "../custom/MyPagination"
 

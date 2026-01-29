@@ -21,6 +21,7 @@ export interface IFutsalApi {
   created_at: string;
   distance:number;
   map_source:string;
+  phone:string
 }
 
 // --------------------------
@@ -46,4 +47,5 @@ export interface IFutsal {
   createdAt: string;
   distance:number;
   mapSource:string;
+  phone:string
 }

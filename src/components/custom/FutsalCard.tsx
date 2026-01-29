@@ -3,7 +3,7 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { MapPin, Star } from "lucide-react"
+import { MapPin, Star, Phone } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { IFutsal } from "@/domain/interfaces/futsalInterface"
 
@@ -44,11 +44,17 @@ export function FutsalCard({ futsal }: FutsalCardProps) {
                 {futsal.address}, {futsal.city}
               </span>
             </div>
+            <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
+              <Phone className="h-3.5 w-3.5 shrink-0" />
+              <span className="line-clamp-1">
+                {futsal.phone}
+              </span>
+            </div>
           </div>
-          <div className="flex items-center gap-1 rounded-lg bg-secondary px-2 py-1">
+          {/* <div className="flex items-center gap-1 rounded-lg bg-secondary px-2 py-1">
             <Star className="h-4 w-4 fill-primary text-primary" />
             <span className="text-sm font-semibold"></span>
-          </div>
+          </div> */}
         </div>
       </CardHeader>
 

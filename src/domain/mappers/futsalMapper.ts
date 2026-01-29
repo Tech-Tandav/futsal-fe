@@ -22,5 +22,6 @@ export const mapFutsal = (futsal: IFutsalApi): IFutsal => ({
   })),
   createdAt: futsal.created_at,
   distance:futsal.distance,
-  mapSource:futsal.map_source
+  mapSource:futsal.map_source,
+  phone:futsal.phone
 });
