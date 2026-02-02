@@ -33,7 +33,7 @@ export function Header() {
     localStorage.removeItem("user")
     localStorage.removeItem("token")
     setUser(null)
-    router.push("/")
+    window.location.reload()
   }
 
   const isAuthenticated = !!user
