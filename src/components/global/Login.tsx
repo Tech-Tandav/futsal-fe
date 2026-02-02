@@ -25,7 +25,6 @@ export default function Login() {
 
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
     const {name, value} = e.target
-    console.log(loginData)
     setLoginData({
       ...loginData,
       [name]:value
