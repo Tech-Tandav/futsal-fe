@@ -1,50 +1,21 @@
-'use client'
-
 import React from 'react'
-import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { LogOut, User } from 'lucide-react'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 
-
-const Helloo = () => {
+const page = () => {
+  // const [data, setData] = 
   return (
-    <>
-    <Card className=' '>
-        <CardHeader>
-            <CardTitle>Login to your account</CardTitle>
-            <CardDescription>
-            Enter your email below to login to your account
-            </CardDescription>
-            <CardAction>
-            <Button variant="link">Sign Up</Button>
-            </CardAction>
-        </CardHeader>
-
-    </Card>
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="rounded-full bg-transparent">
-          <User className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-       <DropdownMenuContent align="center" className="border rounded-md shadow-md">
-          <DropdownMenuLabel>Hasdfasfsafasadfasfasfasdfsadfafsfsfsafsfasfsfasfasasdfsfasfasello</DropdownMenuLabel>
-          <DropdownMenuSeparator/>
-          <DropdownMenuItem>hello</DropdownMenuItem>
-          
-        {/* <DropdownMenuLabel>Hello</DropdownMenuLabel>
-        <DropdownMenuLabel>Hola</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={()=>"hello"}>
-          <LogOut className="mr-2 h-4 w-4" />
-          Logout
-        </DropdownMenuItem> */}
-      </DropdownMenuContent>  
-    </DropdownMenu>
-
-    </>
+    <form className='flex flex-col mx-auto max-w-sm gap-y-2 bg-gray-100 p-4 rounded-2xl'>
+        <h1 className='font-medium text-2xl mb-1 '>Form</h1>
+        <label>Username</label>
+        <input type="text" placeholder="username" className='border border-green-800 rounded-2xl px-2 py-2'/>
+        <label>Email</label>
+        <input type="email" placeholder="email" className='border border-green-800 rounded-2xl px-2 py-2'/>
+        <label>Phone</label>
+        <input type="text" placeholder="phone" className='border border-green-800 rounded-2xl px-2 py-2'/>
+        <label>Password</label>
+        <input type="password"  placeholder="password" className='border border-green-800 rounded-2xl px-2 py-2'/>
+        <button className='border border-green-800 rounded-2xl px-2 py-2 bg-green-400 mt-4' type="submit">Submit</button>
+    </form>
   )
 }
 
-export default Helloo
+export default page

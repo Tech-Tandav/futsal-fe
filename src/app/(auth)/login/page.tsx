@@ -1,4 +1,4 @@
-import Login from "@/components/project/Login";
+import Login from "@/components/global/Login";
 import { Suspense } from "react";
 
 export default function page() {

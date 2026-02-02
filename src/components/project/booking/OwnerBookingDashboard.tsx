@@ -23,7 +23,7 @@ const statusColorMap: Record<string, string> = {
   rejected: "bg-red-500/50 text-red-600 border-red-500/20",
 }
 
-export default function OwnerDashboardClient() {
+export default function OwnerBookingDashboard() {
   const router = useRouter()
   const searchParams = useSearchParams()
 

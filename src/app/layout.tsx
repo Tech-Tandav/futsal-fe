@@ -42,10 +42,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans antialiased`}>
-        <PostHogProvider>
+        {/* <PostHogProvider> */}
           {children}
           <Toaster/>
-        </PostHogProvider>
+        {/* </PostHogProvider> */}
       </body>
     </html>
   );

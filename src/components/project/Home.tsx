@@ -1,9 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Header } from "@/components/custom/Header"
-import { FutsalCard } from "@/components/custom/FutsalCard"
-import { LocationPrompt } from "@/components/custom/LocationPrompt"
+import { Header } from "@/components/global/Header"
+import { FutsalCard } from "@/components/project/futsal/FutsalCard"
+import { LocationPrompt } from "@/components/global/LocationPrompt"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Search, MapPin, Zap } from "lucide-react"
@@ -11,7 +11,8 @@ import { Spinner } from "@/components/ui/spinner"
 import { IFutsal } from "@/domain/interfaces/futsalInterface"
 import { futsalService } from "@/domain/services/futsalService"
 import { ILocation } from "@/domain/interfaces/location"
-import MyPagination from "../custom/MyPagination"
+import MyPagination from "../global/MyPagination"
+// import MyPagination from "../custom/MyPagination"
 
 
 

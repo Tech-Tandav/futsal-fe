@@ -1,4 +1,4 @@
-import Register from "@/components/project/Register";
+import Register from "@/components/global/Register";
 import { Suspense } from "react";
 
 export default function page() {

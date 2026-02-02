@@ -1,6 +1,5 @@
 import { Suspense } from "react"
-import OwnerDashboardClient from "./OwnerDashboardClient"
-// import OwnerDashboardClient from "./OwnerDashboardClient"
+import OwnerBookingDashboard from "@/components/project/booking/OwnerBookingDashboard"
 
 export default function OwnerPage() {
   return (
@@ -14,7 +13,7 @@ export default function OwnerPage() {
         </div>
       }
     >
-      <OwnerDashboardClient />
+      <OwnerBookingDashboard/>
     </Suspense>
   )
 }
