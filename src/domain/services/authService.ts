@@ -14,6 +14,7 @@ export const authServices = {
             return apiResponse.data
         }catch(e){
             console.error("Failed to get student service: ",e)
+            throw e
         }
     },
     login : async(data:ILogin)=>{
