@@ -155,8 +155,6 @@ export default function page() {
                 )}
               </CardContent>
             </Card>
-            <iframe src={futsal.mapSource}
-             width="100%" height="400" className="hidden sm:block mt-8" loading="lazy" ></iframe>
           </div>
 
           <div className="lg:col-span-2">
@@ -214,12 +212,7 @@ export default function page() {
                 )}
               </CardContent>
             </Card>
-          </div>
-          <div>
-            <iframe src={futsal.mapSource} width="100%" height="400" className="block sm:hidden order-2 " loading="lazy" >
-            </iframe>
-          </div>
-          
+          </div>      
         </div>
       </>
    
