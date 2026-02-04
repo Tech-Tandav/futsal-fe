@@ -12,6 +12,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { authApiRepository } from "@/domain/apiRepository/authApiRepository"
 import { userService } from "@/domain/services/userService"
 import { authServices } from "@/domain/services/authService"
+import { toast } from "sonner"
 
 
 export default function Register() {
@@ -38,9 +39,11 @@ export default function Register() {
       const response = await authServices.register(loginData)
       localStorage.setItem('user',JSON.stringify(response))
       router.push(`/login?redirect=${redirect}`)
-    } catch (err) {
-      console.log(err)
-      setError(err instanceof Error ? err.message : "Failed to login")
+    } catch (err:any) {
+      for (const e of err.response.data.errors){
+        toast.error(e.detail, { position: "top-right" })
+      }
+      setError(err instanceof Error ? err.message : "Failed to register")
     } finally {
       setLoading(false)
     }

@@ -33,7 +33,7 @@ export function Header() {
     localStorage.removeItem("user")
     localStorage.removeItem("token")
     setUser(null)
-    window.location.href="/"
+    window.location.reload()
   }
 
   const isAuthenticated = !!user

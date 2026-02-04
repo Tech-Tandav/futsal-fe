@@ -20,7 +20,7 @@ export function FutsalCard({ futsal }: FutsalCardProps) {
           <img
             src={futsal.imageUrl || "/placeholder.svg"}
             alt={futsal.name}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="h-full w-full object-fill transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
           <div className="flex h-full items-center justify-center bg-linear-to-br from-primary/20 to-accent/20">
@@ -38,11 +38,15 @@ export function FutsalCard({ futsal }: FutsalCardProps) {
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1">
             <h3 className="text-lg font-bold text-foreground line-clamp-1">{futsal.name}</h3>
-            <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
+            <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1 " >
               <MapPin className="h-3.5 w-3.5 shrink-0" />
               <span className="line-clamp-1">
                 {futsal.address}, {futsal.city}
               </span>
+              <a href={futsal.mapSource} target="_blank" className="text-green-800 ml-auto">
+                <Button>View Location</Button>
+              </a>
+
             </div>
             <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
               <Phone className="h-3.5 w-3.5 shrink-0" />
