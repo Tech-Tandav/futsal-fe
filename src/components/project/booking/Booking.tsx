@@ -17,6 +17,9 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
+import { BookingSchema, TBookingSchema } from "@/schema/BookingSchema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Controller, useForm } from "react-hook-form"
 
 
 
@@ -27,36 +30,31 @@ export default function Booking() {
   const [futsal, setFutsal] = useState<IFutsal | null>(null)
   const [timeSlot, setTimeSlot] = useState<ITimeSlot | null>(null)
   const [loading, setLoading] = useState(true)
-  const [submitting, setSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState("")
-  const [formData, setFormData] = useState({
-    customerName: "",
-    customerPhone: "",
-    customerEmail: "",
-  })
+  
   const [token, setToken] = useState< string|null>(null)
 
   const futsalId = String(params.futsalId)
   const slotId = String(params.slotId)
   
-  
+  const {register, handleSubmit, formState:{errors, isSubmitting}, reset, control} = useForm<TBookingSchema>({
+      resolver:zodResolver(BookingSchema),
+    })
+
   const [responseId, setResponseId] = useState("")
   useEffect(() => {
     const token = localStorage.getItem("token")
-    console.log(window.location.pathname)
     if (!token){
       const currentPath = window.location.pathname; 
-      console.log(currentPath)
-      router.push(`/register?redirect=booking/${futsalId}/${slotId}?date=${searchParams.get("date")}`);
+      console.log("current path. ", currentPath)
+      router.push(`/register?redirect=${currentPath}?date=${searchParams.get("date")}`);
     }
     setToken(token)
     const userStr = localStorage.getItem("user")
     const loadData = async () => {
       try {
         setLoading(true)
-        
-
         const [futsalData, slotsData] = await Promise.all([
           futsalService.retrieveFutsal(futsalId),
           timeSlotService.retrieveTimeSlot(slotId),
@@ -87,9 +85,9 @@ export default function Booking() {
 
         if (userStr) {
           const user = JSON.parse(userStr)
-          setFormData({
-            customerName: `${user.username}`,
-            customerPhone: "",
+          reset({
+            customerName: user.username,
+            customerPhone: user.phone,
             customerEmail: user.email,
           })
         }
@@ -101,21 +99,19 @@ export default function Booking() {
     }
 
     loadData()
-  }, [params, router])
+  }, [params, router, reset])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
-    setSubmitting(true)
 
+  const onSubmit = async (data:TBookingSchema) => {
+    // setError("")
     try {
       const response = await bookingService.createBooking({
         futsal_id: params.futsalId,
         time_slot: params.slotId,
-        customer_name: formData.customerName,
-        customer_phone: formData.customerPhone,
-        customer_email: formData.customerEmail,
-        date:searchParams.get("date")
+        date:searchParams.get("date"),
+        customer_name:data.customerName,
+        customer_email:data.customerEmail,
+        customer_phone:data.customerPhone
       })
       setResponseId(response.id)
       setSuccess(true)
@@ -123,11 +119,7 @@ export default function Booking() {
       for (const e of err.response.data.errors){
         toast.error(e.detail, { position: "top-right" })
       }
-      console.log(err)
-      // setError(err instanceof Error ? err.response : "Failed to create booking")
-    } finally {
-      setSubmitting(false)
-    }
+    } 
   }
 
   if (loading) {
@@ -260,44 +252,45 @@ export default function Booking() {
                 <CardDescription>Fill in your details to complete the booking</CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  {error && (
-                    <Alert variant="destructive">
-                      <AlertDescription>{error}</AlertDescription>
-                    </Alert>
-                  )}
-
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                  
                   <div className="space-y-2">
-                    <Label htmlFor="customer_name">Full Name</Label>
+                    <Label htmlFor="customerName">Full Name</Label>
                     <Input
-                      id="customer_name"
-                      value={formData.customerName}
-                      onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
-                      required
+                      {...register("customerName")}
+                      id="customerName"
+                      type="text"
+                      placeholder="example"
                     />
+                    { errors.customerName &&
+                      <p className="text-red-500">{errors.customerName.message as string} </p>
+                    }
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="customer_email">Email</Label>
+                    <Label htmlFor="customerEmail">Email</Label>
                     <Input
-                      id="customer_email"
+                      {...register("customerEmail")}
+                      id="customerEmail"
                       type="email"
-                      value={formData.customerEmail}
-                      onChange={(e) => setFormData({ ...formData, customerEmail: e.target.value })}
-                      required
+                      placeholder="example@gmail.com"
                     />
+                    { errors.customerEmail &&
+                      <p className="text-red-500">{errors.customerEmail.message as string} </p>
+                    }
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="customer_phone">Phone Number</Label>
+                    <Label htmlFor="customerPhone">Phone Number</Label>
                     <Input
-                      id="customer_phone"
+                      {...register("customerPhone")}
+                      id="customerPhone"
                       type="tel"
-                      placeholder="+1 (555) 000-0000"
-                      value={formData.customerPhone}
-                      onChange={(e) => setFormData({ ...formData, customerPhone: e.target.value })}
-                      required
+                      placeholder="9876543210"
                     />
+                    { errors.customerPhone &&
+                      <p className="text-red-500">{errors.customerPhone.message as string} </p>
+                    }
                   </div>
 
                   <Alert>
@@ -307,8 +300,8 @@ export default function Booking() {
                     </AlertDescription>
                   </Alert>
 
-                  <Button type="submit" className="w-full" size="lg" disabled={submitting}>
-                    {submitting ? "Submitting..." : "Submit Booking Request"}
+                  <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
+                    {isSubmitting ? "Submitting..." : "Submit Booking Request"}
                   </Button>
                 </form>
               </CardContent>
@@ -319,3 +312,5 @@ export default function Booking() {
     
   )
 }
+
+

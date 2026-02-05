@@ -9,20 +9,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { authServices } from "@/domain/services/authService"
 import { toast } from "sonner"
-import { FieldValue, FieldValues, useForm } from "react-hook-form"
-import { z } from "zod"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { LoginSchema, TLoginSchema } from "@/schema/LoginSchema"
 
 
-export const LoginSchema = z.object({
-  username:z.string(),
-  password:z.string().min(8, "Requires at least 8 characters..")
-})
 
-type TLoginSchema = z.infer<typeof LoginSchema>
+
 export default function Login() {
   const router = useRouter()
-
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") || "/"
 
@@ -41,10 +36,7 @@ export default function Login() {
       for (const e of err.response.data.errors){
         toast.error(e.detail, { position: "top-right" })
       }
-      // setError(err instanceof Error ? err.message : "Failed to login")
-    } finally {
-      // setLoading(false)
-    }
+    } 
   }
 
   return (
@@ -58,11 +50,6 @@ export default function Login() {
           
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )} */}
 
             <div className="space-y-2">
               <Label htmlFor="username">Username</Label>
@@ -71,7 +58,7 @@ export default function Login() {
                 id="username"
                 type="text"
                 placeholder="username"
-                required
+                // required
               />
               { errors.username &&
                  <p className="text-red-500">{errors.username.message as string} </p>
@@ -85,9 +72,10 @@ export default function Login() {
                 id="password"
                 type="password"
                 placeholder="••••••••"
+                autoComplete="new-password"
                 // name="password"
                 // onChange={handleChange}
-                required
+                // required
               />
               { errors.password &&
                  <p className="text-red-500">{errors.password.message as string} </p>

@@ -5,4 +5,6 @@ export interface ILogin{
 
 export interface IRegister extends ILogin{
     email:string;
+    confirmPassword:string;
+    phone:string
 }

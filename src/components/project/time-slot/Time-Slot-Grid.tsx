@@ -31,9 +31,6 @@ const TIME_SLOTS = [
   "18:00:00",
   "19:00:00",
   "20:00:00",
-  "21:00:00",
-  "22:00:00",
-  "23:00:00",
 ]
 
 export function TimeSlotGrid({ timeSlots, onSlotClick, selectedSlotId, isStaff }: TimeSlotGridProps) {

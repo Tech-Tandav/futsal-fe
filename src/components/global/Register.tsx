@@ -1,54 +1,39 @@
 "use client"
 
-import type React from "react"
-import { useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { authApiRepository } from "@/domain/apiRepository/authApiRepository"
-import { userService } from "@/domain/services/userService"
 import { authServices } from "@/domain/services/authService"
 import { toast } from "sonner"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { RegisterSchema, TRegisterSchema } from "@/schema/RegisterSchema"
 
 
 export default function Register() {
   const router = useRouter()
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") || "/"; // default to home
-  const [loginData, setLoginData] = useState({username:"", password:"", email:""})
-  const [error, setError] = useState("")
-  const [loading, setLoading] = useState(false)
 
-  const handleChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
-    const {name, value} = e.target
-    console.log(loginData)
-    setLoginData({
-      ...loginData,
-      [name]:value
-    })
-  }
+  const {register, handleSubmit, formState:{errors, isSubmitting}, reset} = useForm<TRegisterSchema>({
+    resolver:zodResolver(RegisterSchema)
+  })
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+  const onSubmit = async (data:TRegisterSchema) => {
     try {
-      const response = await authServices.register(loginData)
+      const response = await authServices.register(data)
       localStorage.setItem('user',JSON.stringify(response))
       router.push(`/login?redirect=${redirect}`)
     } catch (err:any) {
       for (const e of err.response.data.errors){
         toast.error(e.detail, { position: "top-right" })
       }
-      setError(err instanceof Error ? err.message : "Failed to register")
-    } finally {
-      setLoading(false)
     }
   }
-
+  
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/30 px-4">
       <Card className="w-full max-w-md">
@@ -57,53 +42,80 @@ export default function Register() {
           <CardDescription>Enter your credentials to create your account</CardDescription>
         </CardHeader>
         <CardContent>
-          
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        
             <div className="space-y-2">
               <Label htmlFor="username">Username</Label>
               <Input
+                {...register("username")}
                 id="username"
                 type="text"
                 placeholder="username"
-                onChange={handleChange}
-                name="username"
-                required
+                autoComplete="current"
               />
+              { errors.username &&
+                 <p className="text-red-500">{errors.username.message as string} </p>
+              }
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input
+                {...register("password")}
                 id="password"
                 type="password"
                 placeholder="••••••••"
-                name="password"
-                onChange={handleChange}
-                required
+                autoComplete="current-password"
               />
+              { errors.password &&
+                 <p className="text-red-500">{errors.password.message as string} </p>
+              }
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword">Password</Label>
+              <Input
+                {...register("confirmPassword")}
+                id="confirmPassword"
+                type="password"
+                placeholder="••••••••"
+                autoComplete="current-password"
+              />
+              { errors.confirmPassword &&
+                 <p className="text-red-500">{errors.confirmPassword.message as string} </p>
+              }
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
+                {...register("email")}
                 id="email"
                 type="email"
                 placeholder="example@gmail.com"
-                name="email"
-                onChange={handleChange}
-                required
+                
               />
+              { errors.email &&
+                 <p className="text-red-500">{errors.email.message as string} </p>
+              }
             </div>
 
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Registering..." : "Register"}
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone Number</Label>
+              <Input
+                {...register("phone")}
+                id="phone"
+                type="number"
+                placeholder="phone"
+                autoComplete="current"
+              />
+              { errors.phone &&
+                 <p className="text-red-500">{errors.phone.message as string} </p>
+              }
+            </div>
+
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              { isSubmitting ? "Registering..." : "Register"}
             </Button>
 
             <p className="text-center text-sm text-muted-foreground">

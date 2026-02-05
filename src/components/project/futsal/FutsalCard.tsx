@@ -20,7 +20,7 @@ export function FutsalCard({ futsal }: FutsalCardProps) {
           <img
             src={futsal.imageUrl || "/placeholder.svg"}
             alt={futsal.name}
-            className="h-full w-full object-fill transition-transform duration-300 group-hover:scale-105"
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
           <div className="flex h-full items-center justify-center bg-linear-to-br from-primary/20 to-accent/20">
