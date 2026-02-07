@@ -41,13 +41,14 @@ export default function Booking() {
       resolver:zodResolver(BookingSchema),
     })
 
-  // const [responseId, setResponseId] = useState("")
+  const date = searchParams.get("date")
+
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true)
         const [futsalData, slotsData] = await Promise.all([
-          futsalService.retrieveFutsal(futsalId),
+          futsalService.retrieveFutsal(futsalId, date, slotId),
           timeSlotService.retrieveTimeSlot(slotId),
         ])
 
@@ -94,7 +95,7 @@ export default function Booking() {
       const response = await bookingService.createBooking({
         futsal_id: params.futsalId,
         time_slot: params.slotId,
-        date:searchParams.get("date"),
+        date:date,
         customer_name:data.customerName,
         customer_email:data.customerEmail,
         customer_phone:data.customerPhone
