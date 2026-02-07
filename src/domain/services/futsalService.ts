@@ -22,7 +22,7 @@ export const futsalService = {
     }
   },
 
-  retrieveFutsal: async (id: string, date:string | null, time_slot:string): Promise<IFutsal | null> => {
+  retrieveFutsal: async (id: string, date?:string | null, time_slot?:string): Promise<IFutsal | null> => {
     try {
       const response = await futsalApiRepository.retrieveFutsal(id, date, time_slot);
       if (response?.status !== 200) return null;

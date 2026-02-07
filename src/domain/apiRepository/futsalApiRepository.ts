@@ -12,7 +12,7 @@ export const futsalApiRepository = {
     }
   },
 
-  retrieveFutsal: async (id: string, date:string | null, time_slot:string) => {
+  retrieveFutsal: async (id: string, date?:string | null, time_slot?:string) => {
     try {
       return await instance.get(`futsal/futsals/${id}/?date=${date}&time_slot=${time_slot}`);
     } catch (e) {
