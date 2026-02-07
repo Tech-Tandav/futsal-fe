@@ -50,8 +50,6 @@ const handler = NextAuth({
     },
 
     async session({ session, token }) {
-      console.log(session)
-      console.log(token)
       if (!session.user) {
         session.user = {} as any;
       }
@@ -59,6 +57,8 @@ const handler = NextAuth({
       session.user.email = token.email as string;
       session.user.role = token.role as "owner" | "customer";
       session.user.id = token.userId as string;
+      session.user.phone = token.phone as string;
+
 
       session.accessToken = token.accessToken as string;
 

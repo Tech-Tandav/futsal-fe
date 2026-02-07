@@ -41,7 +41,7 @@ export default function Booking() {
       resolver:zodResolver(BookingSchema),
     })
 
-  const [responseId, setResponseId] = useState("")
+  // const [responseId, setResponseId] = useState("")
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -77,6 +77,11 @@ export default function Booking() {
       } finally {
         setLoading(false)
       }
+      reset({
+        customerName: session?.user.name,
+        customerPhone: session?.user.phone,
+        customerEmail: session?.user.email,
+      })
     }
 
     loadData()
@@ -94,7 +99,7 @@ export default function Booking() {
         customer_email:data.customerEmail,
         customer_phone:data.customerPhone
       })
-      setResponseId(response.id)
+      // setResponseId(response.id)
       setSuccess(true)
     } catch (err:any) {
       for (const e of err.response.data.errors){

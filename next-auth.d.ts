@@ -13,9 +13,10 @@ declare module "next-auth" {
     user: {
       id?: number | string;
       role?: "owner" | "customer";
-      name?: string | null;
-      email?: string | null;
+      name?: string ;
+      email?: string ;
       image?: string | null;
+      phone?: string ;
     };
   }
 }
