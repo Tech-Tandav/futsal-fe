@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { PostHogProvider } from "./providers";
+import AuthProvider from "@/components/global/Authprovider";
 
 
 
@@ -43,8 +44,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans antialiased`}>
         {/* <PostHogProvider> */}
+        <AuthProvider>
           {children}
-          <Toaster/>
+        </AuthProvider>
+        <Toaster/>
         {/* </PostHogProvider> */}
       </body>
     </html>
