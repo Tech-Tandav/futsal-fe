@@ -13,30 +13,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { User, LogOut } from "lucide-react"
+import { useSession } from "next-auth/react"
 
 
 export function Header() {
-  const router = useRouter()
-  const [user, setUser] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const fetchUser =  () => {
-      const userStr = localStorage.getItem("user")
-      if (userStr){setUser(JSON.parse(userStr))}
-      setLoading(false)
-    };
-    fetchUser();
-  }, [])
-
+  const { data: session, status }= useSession()
   const handleLogout = () => {
-    localStorage.removeItem("user")
-    localStorage.removeItem("token")
-    setUser(null)
     window.location.reload()
   }
 
-  const isAuthenticated = !!user
+  const isAuthenticated = status==="authenticated" 
+  console.log(isAuthenticated)
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -46,9 +33,8 @@ export function Header() {
 
         <nav className="flex items-center gap-2">
           
-          {loading ?
-            <></>
-          : isAuthenticated ? (
+
+          {isAuthenticated  ? (
             <>
               <Link href="/my-bookings">
                 <Button variant="ghost" className="text-sm font-medium">
@@ -62,8 +48,8 @@ export function Header() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" >
-                  <DropdownMenuLabel>{user.username.toUpperCase()}</DropdownMenuLabel>
-                  <DropdownMenuLabel>{user.is_staff ? "Owner" : "Customer"}</DropdownMenuLabel>
+                  <DropdownMenuLabel>{session.user.name?.toUpperCase()}</DropdownMenuLabel>
+                  <DropdownMenuLabel>{session.user.role}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />

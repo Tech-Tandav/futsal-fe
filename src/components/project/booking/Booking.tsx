@@ -20,6 +20,7 @@ import { toast } from "sonner"
 import { BookingSchema, TBookingSchema } from "@/schema/BookingSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
+import { useSession } from "next-auth/react"
 
 
 
@@ -32,26 +33,16 @@ export default function Booking() {
   const [loading, setLoading] = useState(true)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState("")
-  
-  const [token, setToken] = useState< string|null>(null)
 
   const futsalId = String(params.futsalId)
   const slotId = String(params.slotId)
-  
+  const { data: session, status } = useSession();
   const {register, handleSubmit, formState:{errors, isSubmitting}, reset, control} = useForm<TBookingSchema>({
       resolver:zodResolver(BookingSchema),
     })
 
   const [responseId, setResponseId] = useState("")
   useEffect(() => {
-    const token = localStorage.getItem("token")
-    if (!token){
-      const currentPath = window.location.pathname; 
-      console.log("current path. ", currentPath)
-      router.push(`/register?redirect=${currentPath}?date=${searchParams.get("date")}`);
-    }
-    setToken(token)
-    const userStr = localStorage.getItem("user")
     const loadData = async () => {
       try {
         setLoading(true)
@@ -80,16 +71,6 @@ export default function Booking() {
           setTimeSlot(selectedSlot)
         } else {
           setTimeSlot(null); // Or undefined, depending on your state's allowed types
-        }
-
-
-        if (userStr) {
-          const user = JSON.parse(userStr)
-          reset({
-            customerName: user.username,
-            customerPhone: user.phone,
-            customerEmail: user.email,
-          })
         }
       } catch (error) {
         setError("Failed to load booking details")
@@ -155,7 +136,7 @@ export default function Booking() {
                 </AlertDescription>
               </Alert>
               <div className="flex flex-col gap-2">
-                { token && (
+                { status =='authenticated' && (
                   <Button onClick={() => {
                     router.push("/my-bookings")
                   }

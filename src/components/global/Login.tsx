@@ -6,39 +6,42 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { authServices } from "@/domain/services/authService"
 import { toast } from "sonner"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { LoginSchema, TLoginSchema } from "@/schema/LoginSchema"
-
-
+import { signIn } from "next-auth/react";
 
 
 export default function Login() {
   const router = useRouter()
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") || "/"
+  const redirect = searchParams.get("callbackUrl") || "/"
 
   const { register, handleSubmit, formState:{errors, isSubmitting}, reset} = useForm({
     resolver: zodResolver(LoginSchema)
   })
 
-  const onSubmit = async (data:TLoginSchema) => {
-    // setLoading(true)
-    try {
-      const response = await authServices.login(data)
-      localStorage.setItem('token',response.token)
-      localStorage.setItem('user',JSON.stringify(response.user))
-      router.push(redirect)
-    } catch (err:any) {
-      for (const e of err.response.data.errors){
-        toast.error(e.detail, { position: "top-right" })
-      }
-    } 
-  }
+  const onSubmit = async (data: TLoginSchema) => {
+    const res = await signIn("credentials", {
+      username: data.username,
+      password: data.password,
+      redirect: false,
+      callbackUrl: redirect,
+    })
+    if (!res) {
+      toast.error("Something went wrong")
+      return
+    }
 
+    if (res.error) {
+      toast.error(res.error)
+      return
+    }
+
+    toast.success("Logged in successfully")
+    router.push(redirect )
+  }
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/30 px-4">
       <Card className="w-full max-w-md">

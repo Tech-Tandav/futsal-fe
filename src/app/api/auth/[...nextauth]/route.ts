@@ -1,4 +1,4 @@
-import { userServices } from "@/application/services/userServices";
+import { authServices } from "@/domain/services/authService";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -13,15 +13,15 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         if (!credentials) return null;
-
-        const data = await userServices.loginServices({
+        
+        const data = await authServices.login({
           username: credentials.username,
           password: credentials.password,
         });
 
         if (!data) return null;
 
-        const role = data?.user?.is_staff ? "counselor" : "student";
+        const role = data?.user?.is_staff ? "owner" : "customer";
         return {
           id: data?.user.id,
           name: data?.user.username,
@@ -50,13 +50,14 @@ const handler = NextAuth({
     },
 
     async session({ session, token }) {
+      console.log(session)
+      console.log(token)
       if (!session.user) {
         session.user = {} as any;
       }
-
       session.user.name = token.username as string;
       session.user.email = token.email as string;
-      session.user.role = token.role as "student" | "counselor";
+      session.user.role = token.role as "owner" | "customer";
       session.user.id = token.userId as string;
 
       session.accessToken = token.accessToken as string;
@@ -66,6 +67,10 @@ const handler = NextAuth({
   },
 
   secret: process.env.NEXTAUTH_SECRET,
+
+  pages:{
+    signIn:"/login"
+  }
 });
 
 export { handler as GET, handler as POST };
