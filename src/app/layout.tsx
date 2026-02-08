@@ -3,7 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { PostHogProvider } from "./providers";
-import { AuthProvider } from "@/components/global/Authprovider";
+import { AuthProvider } from "../components/global/Authprovider";
+// import { AuthProvider } from "@/components/global/Authprovider";
 
 
 const _geist = Geist({ subsets: ["latin"] })
