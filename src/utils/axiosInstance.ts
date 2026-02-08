@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getSession } from "next-auth/react";
 
 export const instance = axios.create({
     baseURL:process.env.NEXT_PUBLIC_BASEURL
@@ -12,13 +13,15 @@ instance.interceptors.request.use((config)=>{
 })
 
 instance.interceptors.request.use(
-    config => {
-        const token = localStorage.getItem('token')
-        if (token){
-            config.headers.Authorization = `Token ${token}`
-        }
-        return config
+    async config => {
+    const session = await getSession()
+
+    if (session?.accessToken) {
+      config.headers.Authorization = `Token ${session.accessToken}`
     }
+
+    return config
+  }
 )
 
 
@@ -37,7 +40,7 @@ instance.interceptors.request.use(
 // });
 
 // authenticatedInstance.interceptors.request.use(async (config) => {
-//   const session = await getSession();
+  const session = await getSession();
 //   const token = session?.accessToken;
 
 //   if (token) {
