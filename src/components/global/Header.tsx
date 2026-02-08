@@ -13,17 +13,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { User, LogOut } from "lucide-react"
-import { useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 
 
 export function Header() {
-  const { data: session, status }= useSession()
-  const handleLogout = () => {
-    window.location.reload()
+  const { data: session, status } = useSession()
+
+  // stable auth check
+  const isAuthenticated = !!session
+
+  // optional loading guard
+  if (status === "loading") {
+    return null // or <Spinner />
   }
 
-  const isAuthenticated = status==="authenticated" 
-  console.log(isAuthenticated)
+  const handleLogout = async () => {
+    await signOut({ redirect: false })
+  }
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
