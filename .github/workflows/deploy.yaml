@@ -3,7 +3,7 @@ name : Deploy Futsal Frontend
 on : 
   push :
     branches :
-      - multi
+      - main
 
 jobs :
   deploy :
