@@ -1,6 +1,10 @@
 import * as React from "react"
 
+<<<<<<< HEAD
 import { cn } from "@/src/lib/utils"
+=======
+import { cn } from "@/lib/utils"
+>>>>>>> 6cf2cbed1759f2c4bd1a9ad937f7e51cdd3f183f
 
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (

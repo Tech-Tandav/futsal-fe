@@ -1,20 +1,17 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/src/components/ui/sonner"
+import { Toaster } from "sonner";
+import { PostHogProvider } from "./providers";
+import { AuthProvider } from "@/components/global/AuthProvider";
 
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const _geist = Geist({ subsets: ["latin"] })
+const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
+  manifest:"/manifest.json",
   title: "Futsal Booking System",
   description: "Book your futsal court easily",
   generator: "v0.app",
@@ -45,8 +42,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans antialiased`}>
-        {children}
-        <Toaster richColors />
+        {/* <PostHogProvider> */}
+        <AuthProvider>
+          {children}
+          <Toaster/>
+        </AuthProvider>
+        {/* </PostHogProvider> */}
       </body>
     </html>
   );
