@@ -12,8 +12,7 @@ import { IFutsal } from "@/domain/interfaces/futsalInterface"
 import { futsalService } from "@/domain/services/futsalService"
 import { ILocation } from "@/domain/interfaces/location"
 import MyPagination from "../global/MyPagination"
-import { SessionProvider } from "next-auth/react"
-// import MyPagination from "../custom/MyPagination"
+
 
 
 
@@ -60,7 +59,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <SessionProvider> <Header /></SessionProvider>
+      <Header />
      
 
       <main className="container mx-auto px-4 py-12">
