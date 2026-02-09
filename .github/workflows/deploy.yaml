@@ -19,11 +19,10 @@ jobs :
           host : ${{ secrets.SSH_HOST }}
           username : root
           key : ${{ secrets.SSH_KEY }} 
-          script :
+          script: |
             cd /home/ubuntu/projects/khelkud/futsal-fe
             git pull
             docker compose -f docker-compose.yml up -d --build --force-recreate
-
 
 
 
