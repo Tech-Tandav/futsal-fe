@@ -19,6 +19,7 @@ jobs :
           host : ${{ secrets.SSH_HOST }}
           username : root
           key : ${{ secrets.SSH_KEY }} 
+          port: 4096
           script: |
             cd /home/ubuntu/projects/khelkud/futsal-fe
             git pull
