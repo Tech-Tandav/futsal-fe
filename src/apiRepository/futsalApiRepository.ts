@@ -1,5 +1,4 @@
-import { instance } from "@/src/utils/axiosInstance";
-// import { IfutsalGet , IfutsalPost } from "@/interface/futsalInterface";
+import { instance } from "@/utils/axiosInstance";
 
 // futsalRepository.ts
 export interface FutsalApiResponse {

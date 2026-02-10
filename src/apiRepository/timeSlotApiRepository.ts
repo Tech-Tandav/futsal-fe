@@ -1,5 +1,5 @@
-import { instance } from "@/src/utils/axiosInstance";
-import { ITimeSlot } from "@/src/interface/timeSlotInterface";
+import { instance } from "@/utils/axiosInstance"
+
 
 export const timeSlotApiRepository = {
     getTimeSlot : async()=>{

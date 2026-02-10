@@ -1,5 +1,5 @@
-import { instance } from "@/src/utils/axiosInstance";
-// import { Ibooking } from "@/src/interface/bookingInterface";
+import { instance } from "@/utils/axiosInstance";
+
 
 export const bookingApiRepository = {
     getBooking : async()=>{

@@ -1,5 +1,5 @@
-import { ILogin, IRegister } from "@/src/interface/authInterface";
-import { authInstance } from "@/src/utils/authAxiosInstance";
+import { ILogin, IRegister } from "@/interface/authInterface"
+import { authInstance } from "@/utils/authAxiosInstance"
 
 export const authApiRepository = {
     postRegister : async(data:IRegister)=>{
