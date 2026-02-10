@@ -19,6 +19,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { TimeSlotGrid } from "@/components/project/time-slot/Time-Slot-Grid"
+import { useSession } from "next-auth/react"
 
 
 export default function page() {
@@ -28,7 +29,7 @@ export default function page() {
   const [timeSlots, setTimeSlots] = useState<ITimeSlot[]>([])
   const [selectedSlot, setSelectedSlot] = useState<{timeSlot:ITimeSlot, date:string} | null>(null)
   const [loading, setLoading] = useState(true)
-  const [isStaff, setStaff] = useState(false)
+  const { data:session, status} = useSession()
 
   const loadData = async () => {
     try {
@@ -41,13 +42,6 @@ export default function page() {
 
       setFutsal(futsalData)
       setTimeSlots(slotsData)
-      const user = localStorage.getItem("user")
-      if (user){
-        const isStaff = JSON.parse(user).is_staff
-        console.log("user is ",isStaff)
-        setStaff(isStaff)
-      }
-
     } catch (error) {
       console.error("Failed to load futsal details:", error)
       throw error
@@ -61,7 +55,7 @@ export default function page() {
   }, [params.id])
 
   const handleSlotClick = (timeSlot:ITimeSlot, date:string) => {
-    isStaff ? router.push(`/owner?futsal_id=${String(params.id)}&timeSlot_id=${timeSlot.id}&date=${date}`) : setSelectedSlot({timeSlot, date})
+    session?.user?.role == 'owner' ? router.push(`/owner?futsal_id=${String(params.id)}&timeSlot_id=${timeSlot.id}&date=${date}`) : setSelectedSlot({timeSlot, date})
   }
 
   const handleBooking = () => {
@@ -154,8 +148,6 @@ export default function page() {
                 )}
               </CardContent>
             </Card>
-            <iframe src={futsal.mapSource}
-             width="100%" height="400" className="hidden sm:block mt-8" loading="lazy" ></iframe>
           </div>
 
           <div className="lg:col-span-2">
@@ -173,7 +165,7 @@ export default function page() {
               </CardHeader>
 
               <CardContent className="space-y-4 ">
-                <TimeSlotGrid timeSlots={timeSlots} onSlotClick={handleSlotClick} selectedSlotId={selectedSlot?.timeSlot.id} isStaff={isStaff}/>
+                <TimeSlotGrid timeSlots={timeSlots} onSlotClick={handleSlotClick} selectedSlotId={selectedSlot?.timeSlot.id} isStaff={true}/>
 
                 {selectedSlot && (
                   <Dialog open={!!selectedSlot} onOpenChange={(v) => !v && setSelectedSlot(null)}>
@@ -213,12 +205,7 @@ export default function page() {
                 )}
               </CardContent>
             </Card>
-          </div>
-          <div>
-            <iframe src={futsal.mapSource} width="100%" height="400" className="block sm:hidden order-2 " loading="lazy" >
-            </iframe>
-          </div>
-          
+          </div>          
         </div>
       </>
    

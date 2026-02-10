@@ -6,9 +6,7 @@ const secret = process.env.NEXTAUTH_SECRET!;
 
 export async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret });
-
   const { pathname, search } = req.nextUrl;
-
   // Allow auth pages
   if (pathname.startsWith("/login") || pathname.startsWith("/api/auth")) {
     return NextResponse.next();

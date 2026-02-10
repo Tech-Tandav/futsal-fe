@@ -1,7 +1,5 @@
 "use client"
 
-import type React from "react"
-
 import { useEffect, useState } from "react"
 import { redirect, useParams, useRouter, useSearchParams } from "next/navigation"
 import { ArrowLeft, CheckCircle, Calendar, Clock, MapPin } from "lucide-react"
@@ -90,7 +88,6 @@ export default function Booking() {
 
 
   const onSubmit = async (data:TBookingSchema) => {
-    // setError("")
     try {
       const response = await bookingService.createBooking({
         futsal_id: params.futsalId,
@@ -100,7 +97,6 @@ export default function Booking() {
         customer_email:data.customerEmail,
         customer_phone:data.customerPhone
       })
-      // setResponseId(response.id)
       setSuccess(true)
     } catch (err:any) {
       for (const e of err.response.data.errors){

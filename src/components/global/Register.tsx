@@ -16,7 +16,7 @@ import { RegisterSchema, TRegisterSchema } from "@/schema/RegisterSchema"
 export default function Register() {
   const router = useRouter()
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") || "/"; // default to home
+  const redirect = searchParams.get("callbackUrl") || "/"
 
   const {register, handleSubmit, formState:{errors, isSubmitting}, reset} = useForm<TRegisterSchema>({
     resolver:zodResolver(RegisterSchema)
@@ -25,8 +25,7 @@ export default function Register() {
   const onSubmit = async (data:TRegisterSchema) => {
     try {
       const response = await authServices.register(data)
-      localStorage.setItem('user',JSON.stringify(response))
-      router.push(`/login?redirect=${redirect}`)
+      router.push(`/login?callbackUrl=${redirect}`)
     } catch (err:any) {
       for (const e of err.response.data.errors){
         toast.error(e.detail, { position: "top-right" })
@@ -107,7 +106,6 @@ export default function Register() {
                 id="phone"
                 type="number"
                 placeholder="phone"
-                autoComplete="current"
               />
               { errors.phone &&
                  <p className="text-red-500">{errors.phone.message as string} </p>
