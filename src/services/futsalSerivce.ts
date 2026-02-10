@@ -1,5 +1,5 @@
-import { futsalApiRepository } from "@/src/apiRepository/futsalApiRepository";
-import { IFutsal} from "@/src/interface/futsalInterface"; 
+import { futsalApiRepository } from "@/apiRepository/futsalApiRepository";
+import { IFutsal} from "@/interface/futsalInterface"; 
 
 
 export const futsalServices = {

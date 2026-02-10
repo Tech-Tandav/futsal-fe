@@ -1,5 +1,5 @@
-import { authApiRepository } from "@/src/apiRepository/authApiRepository";
-import { ILogin, IRegister } from "@/src/interface/authInterface";
+import { authApiRepository } from "@/apiRepository/authApiRepository";
+import { ILogin, IRegister } from "@/interface/authInterface";
 
 
 export const authServices = {

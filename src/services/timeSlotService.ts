@@ -1,5 +1,5 @@
-import { timeSlotApiRepository } from "@/src/apiRepository/timeSlotApiRepository";
-import { ITimeSlot } from "@/src/interface/timeSlotInterface";
+import { timeSlotApiRepository } from "@/apiRepository/timeSlotApiRepository";
+import { ITimeSlot } from "@/interface/timeSlotInterface";
 
 
 export const timeSlotServices = {

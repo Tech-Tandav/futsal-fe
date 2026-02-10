@@ -1,4 +1,4 @@
-import { bookingApiRepository } from "@/src/apiRepository/bookingApiRepository";
+import { bookingApiRepository } from "@/apiRepository/bookingApiRepository";
 import { IBooking } from "../interface/bookingInterface";
 
 
