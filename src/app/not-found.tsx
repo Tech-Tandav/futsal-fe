@@ -5,10 +5,8 @@ import React from 'react'
 
 const NotFound = () => {
     const pathName = usePathname()
-    console.log(pathName)
-    console.log(typeof(pathName))
     return (
-        <div>NotFound</div>
+        <div></div>
     )
 }
 
