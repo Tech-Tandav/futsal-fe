@@ -27,11 +27,11 @@ export function FutsalCard({ futsal }: FutsalCardProps) {
             <span className="text-8xl">⚽</span>
           </div>
         )}
-        {futsal.distance !== null && (
+        {/* {futsal.distance !== null && (
           <Badge className="absolute right-3 top-3 bg-background/95 text-foreground font-semibold shadow-lg">
             {futsal.distance?.toFixed(1)} km away
           </Badge>
-        )}
+        )} */}
       </div>
 
       <CardHeader className="pb-3 ">

@@ -25,10 +25,10 @@ export default function Home() {
   const [userLocation, setUserLocation] = useState<ILocation | null>(null)
   const [showLocationPrompt, setShowLocationPrompt] = useState(true)
 
-  const loadFutsals = async (userLocation?:ILocation) => {
+  const loadFutsals = async (page:number,search?:string, userLocation?:ILocation,) => {
     try {
       setLoading(true)
-      const data = await futsalService.getFutsals(page,userLocation)
+      const data = await futsalService.getFutsals(page,search,userLocation)
       setFutsals(data.results)
       setPage(data.current_page)
       settotalPages(data.total_pages)
@@ -41,21 +41,22 @@ export default function Home() {
   }
 
   useEffect(() => {
-    loadFutsals()
-  }, [page])
+    const timeout = setTimeout(() => {
+      loadFutsals(page, searchQuery, userLocation || undefined)
+    }, 500)
 
-  const handleLocationGranted = (lat: number, lng: number) => {
-    setUserLocation({ lat, lng })
-    setShowLocationPrompt(false)
-    loadFutsals({lat, lng})
-  }
+    return () => clearTimeout(timeout)
+  }, [page, searchQuery])
 
-  const filteredFutsals = futsals.filter(
-    (futsal) =>
-      futsal.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      futsal.city?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      futsal.address?.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
+
+
+  // const handleLocationGranted = (lat: number, lng: number) => {
+  //   setUserLocation({ lat, lng })
+  //   setShowLocationPrompt(false)
+  //   loadFutsals({lat, lng})
+  // }
+
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -79,7 +80,10 @@ export default function Home() {
               <Input
                 placeholder="Search courts, cities..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setPage(1)
+                  setSearchQuery(e.target.value)
+                }}
                 className="pl-10"
               />
             </div>
@@ -96,7 +100,7 @@ export default function Home() {
           <div className="flex min-h-100 items-center justify-center">
             <Spinner className="h-8 w-8" />
           </div>
-        ) : filteredFutsals.length === 0 ? (
+        ) : futsals.length === 0 ? (
           <div className="text-center py-16">
             <h2 className="text-2xl font-bold text-foreground">No courts found</h2>
             <p className="text-foreground/60 mt-2">Try adjusting your search</p>
@@ -104,9 +108,9 @@ export default function Home() {
         ) : (
           <>
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-foreground">{filteredFutsals.length} Venues Available</h2>
+              <h2 className="text-2xl font-bold text-foreground">{futsals.length} Venues Available</h2>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {filteredFutsals.map((futsal) => (
+                {futsals.map((futsal) => (
                   <FutsalCard key={futsal.id} futsal={futsal} />
                 ))}
               </div>

@@ -7,9 +7,9 @@ import { ILocation } from "../interfaces/location";
 
 
 export const futsalService = {
-  getFutsals: async (page:number,userLocation?:ILocation): Promise<IResponseApi<IFutsal[]>> => {
+  getFutsals: async (page:number,search?: string,userLocation?:ILocation): Promise<IResponseApi<IFutsal[]>> => {
     try {
-      const response = await futsalApiRepository.getFutsals(page,userLocation);
+      const response = await futsalApiRepository.getFutsals(page,search,userLocation);
       const apiResponse = response.data;
       const mapData = apiResponse.results.map(mapFutsal);
       return {
