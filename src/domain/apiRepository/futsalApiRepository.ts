@@ -5,7 +5,7 @@ export const futsalApiRepository = {
   getFutsals: async (page:number, userLocation?:ILocation) => {
     try {
       console.log(userLocation)
-      return await instance.get(`futsal/futsals/?page=${page}&lat=${userLocation?.lat}&log=${userLocation?.lng}`)
+      return userLocation ? await instance.get(`futsal/futsals/?page=${page}&lat=${userLocation?.lat}&log=${userLocation?.lng}`) : await instance.get(`futsal/futsals/?page=${page}`)
     } catch (e) {
       console.error("Failed to get futsals: ", e);
       throw e;

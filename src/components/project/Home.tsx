@@ -83,12 +83,12 @@ export default function Home() {
                 className="pl-10"
               />
             </div>
-            {!userLocation && (
+            {/* {!userLocation && (
               <Button variant="outline" onClick={() => setShowLocationPrompt(true)}>
                 <MapPin className="mr-2 h-4 w-4" />
                 Location
               </Button>
-            )}
+            )} */}
           </div>
         </div>
 

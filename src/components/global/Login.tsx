@@ -33,9 +33,8 @@ export default function Login() {
       toast.error("Something went wrong")
       return
     }
-
     if (res.error) {
-      toast.error(res.error)
+      toast.error("Invalid credentials")
       return
     }
 
